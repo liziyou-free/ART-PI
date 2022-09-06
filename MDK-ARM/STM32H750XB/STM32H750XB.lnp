@@ -203,7 +203,6 @@
 "stm32h750xb\ff_gen_drv.o"
 "stm32h750xb\ffsystem.o"
 "stm32h750xb\ffunicode.o"
-"stm32h750xb\mem.o"
 "stm32h750xb\context_rvds.o"
 "stm32h750xb\clock.o"
 "stm32h750xb\components.o"

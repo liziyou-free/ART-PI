@@ -102,15 +102,15 @@ void my_input_read(lv_indev_drv_t * drv, lv_indev_data_t*data)
 
 void LvgBspInit(){
 	
-	static lv_color_t  buf_1[800 * 60] __attribute__ ((aligned (4)));;
-  static lv_color_t  buf_2[800 * 60] __attribute__ ((aligned (4)));;
+	static lv_color_t  buf_1[800 * 100] __attribute__ ((aligned (4)));
+  static lv_color_t  buf_2[800 * 100] __attribute__ ((aligned (4)));
 	static lv_indev_drv_t indev_drv;
 	static lv_disp_draw_buf_t disp_buf;
 	static lv_fs_drv_t drv; 
 	lv_disp_t * disp;
 	
 	/*·ÖÅä»º³åÇø*/ 
-	lv_disp_draw_buf_init(&disp_buf,buf_1,buf_2,(800*60));
+	lv_disp_draw_buf_init(&disp_buf,buf_1,buf_2,(800*100));
 	
   /*×¢²áÏÔÊ¾Æ÷*/
 	lv_disp_drv_init(&MyDisp_drv); 

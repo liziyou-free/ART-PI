@@ -71,9 +71,6 @@ define them in your own project's source files without needing to change
 lodepng source code. Don't forget to remove "static" if you copypaste them
 from here.*/
 
-
- /*	利用内存管理函数在SDRAM建立内存池，用于PNG解码	*/  
-  extern Mem_Root root;
 	
 #ifdef LODEPNG_COMPILE_ALLOCATORS
 static void* lodepng_malloc(size_t size) {
@@ -83,9 +80,8 @@ static void* lodepng_malloc(size_t size) {
   if(size > LODEPNG_MAX_ALLOC) return 0;
 #endif
 	
-	adr0 = Mem_Manage_Aligned_Alloc(&root,4,size);
+	adr0 = malloc(size);
 	
-	//adr0 = tlsf_malloc(size);
 	if(adr0 == NULL){
 		while(1);
 	}
@@ -98,9 +94,7 @@ static void* lodepng_realloc(void* ptr, size_t new_size) {
 #ifdef LODEPNG_MAX_ALLOC
   if(new_size > LODEPNG_MAX_ALLOC) return 0;
 #endif
-	
-	adr = Mem_Manage_Realloc(&root,ptr,new_size);
-//	adr = tlsf_realloc(ptr,new_size);
+	adr = realloc(ptr,new_size);
 	if(adr == NULL){
 		while(1);
 	}
@@ -109,8 +103,7 @@ static void* lodepng_realloc(void* ptr, size_t new_size) {
 
 
 static void lodepng_free(void* ptr) {
-	Mem_Manage_Free(&root,ptr);
-	//tlsf_free(ptr);
+	free(ptr);
 }
 
 

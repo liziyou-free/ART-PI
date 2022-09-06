@@ -16,7 +16,6 @@
 #include "lodepng.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "Mem.h"
 #include "EventRecorder.h"
 /*********************
  *      DEFINES
@@ -39,7 +38,7 @@ static void convert_color_depth(uint8_t * img, uint32_t px_cnt);
 /**********************
  *  STATIC VARIABLES
  **********************/
-extern   Mem_Root root;
+
 /**********************
  *      MACROS
  **********************/
@@ -162,8 +161,7 @@ static lv_res_t decoder_open(lv_img_decoder_t * decoder, lv_img_decoder_dsc_t * 
 
             /*Decode the loaded image in ARGB8888 */
             error = lodepng_decode32(&img_data, &png_width, &png_height, png_data, png_data_size);
-            Mem_Manage_Free(&root,png_data);
-						//tlsf_free(png_data);
+						free(png_data);
 						/*Free the loaded file*/
             if(error) {
                 printf("error %u: %s\n", error, lodepng_error_text(error));
@@ -207,8 +205,7 @@ static void decoder_close(lv_img_decoder_t *decoder, lv_img_decoder_dsc_t *dsc)
 {
     (void)decoder; /*Unused*/
     if (dsc->img_data) {
-        Mem_Manage_Free(&root,(uint8_t *)dsc->img_data);
-			  //tlsf_free((uint8_t *)dsc->img_data);
+			  free((uint8_t *)dsc->img_data);
         dsc->img_data = NULL;
     }
 }

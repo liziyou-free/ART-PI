@@ -53,13 +53,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static  uint8_t* addd;
-  Mem_Root root;
-	uint8_t mem_poor[1024*1024*2] __attribute__((at(0xC0200000)));
-	const Mem_Region poor[]={
-		mem_poor, sizeof(mem_poor),
-		0,0	
-	};
 	uint8_t FontBuffer[1024*1024*5] __attribute__((at(0xC0700000)));
 /* USER CODE END PV */
 
@@ -136,11 +129,6 @@ int main(void)
 	MX_FATFS_Init();	
 	res = f_mount(&SDFatFS, "0", 0);
 	
-	addd = malloc(1024*512);
-	
-	/*		PNG内存池初始化		*/
-	Mem_Manage_Init(&root,&poor);
-	
 	/*		LVGL font24 加载到 SDRAM	5.6MB	*/
 	static FIL  ExFont24;
 	static UINT br;
@@ -172,7 +160,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {	
-		addd++;
 		return 0;
     /* USER CODE END WHILE */
 
@@ -279,8 +266,8 @@ void LvglTask(void *para){
 	
 	lv_init();
 	LvgBspInit();
-	//lv_demo_widgets();
-	lv_demo_benchmark();
+	lv_demo_widgets();
+	//lv_demo_benchmark();
 	//lv_png_init();
 	//CreateMyLvglDemo();
 	while(true){

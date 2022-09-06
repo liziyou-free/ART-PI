@@ -43,7 +43,7 @@
  *=========================*/
 
 /*1: use custom malloc/free, 0: use the built-in `lv_mem_alloc()` and `lv_mem_free()`*/
-#define LV_MEM_CUSTOM      0
+#define LV_MEM_CUSTOM      1
 #if LV_MEM_CUSTOM == 0
 /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
 #  define LV_MEM_SIZE    (1024U * 80)          /*[bytes]*/
@@ -58,24 +58,24 @@
 #endif     /*LV_MEM_CUSTOM*/
 
 /*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
-#define LV_MEMCPY_MEMSET_STD    0
+#define LV_MEMCPY_MEMSET_STD    1
 
 /*====================
    HAL SETTINGS
  *====================*/
 
 /*Default display refresh period. LVG will redraw changed ares with this period time*/
-#define LV_DISP_DEF_REFR_PERIOD     10      /*[ms]*/
+#define LV_DISP_DEF_REFR_PERIOD     1      /*[ms]*/
 
 /*Input device read period in milliseconds*/
-#define LV_INDEV_DEF_READ_PERIOD    10      /*[ms]*/
+#define LV_INDEV_DEF_READ_PERIOD    1      /*[ms]*/
 
 /*Use a custom tick source that tells the elapsed time in milliseconds.
  *It removes the need to manually update the tick with `lv_tick_inc()`)*/
-#define LV_TICK_CUSTOM     0
+#define LV_TICK_CUSTOM     1
 #if LV_TICK_CUSTOM
-#define LV_TICK_CUSTOM_INCLUDE  <Windows.h>         /*Header for the system time function*/
-#define LV_TICK_CUSTOM_SYS_TIME_EXPR (GetTickCount())     /*Expression evaluating to current system time in ms*/
+#define LV_TICK_CUSTOM_INCLUDE  "stm32h7xx_hal.h"         /*Header for the system time function*/
+#define LV_TICK_CUSTOM_SYS_TIME_EXPR (HAL_GetTick())     /*Expression evaluating to current system time in ms*/
 #endif   /*LV_TICK_CUSTOM*/
 
 /*Default Dot Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
@@ -98,7 +98,7 @@
 /*Allow buffering some shadow calculation.
  *LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer, where shadow size is `shadow_width + radius`
  *Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost*/
-#define LV_SHADOW_CACHE_SIZE    1
+#define LV_SHADOW_CACHE_SIZE    50
 #endif /*LV_DRAW_COMPLEX*/
 
 /*Default image cache size. Image caching keeps the images opened.
@@ -106,10 +106,10 @@
  *With complex image decoders (e.g. PNG or JPG) caching can save the continuous open/decode of images.
  *However the opened images might consume additional RAM.
  *0: to disable caching*/
-#define LV_IMG_CACHE_DEF_SIZE       10
+#define LV_IMG_CACHE_DEF_SIZE       50
 
 /*Maximum buffer size to allocate for rotation. Only used if software rotation is enabled in the display driver.*/
-#define LV_DISP_ROT_MAX_BUF         (1*1024)
+#define LV_DISP_ROT_MAX_BUF         (1024*1024)
 /*-------------
  * GPU
  *-----------*/
@@ -242,7 +242,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_ATTRIBUTE_MEM_ALIGN  __attribute__((aligned(4)))
 
 /*Attribute to mark large constant arrays for example font's bitmaps*/
-#define LV_ATTRIBUTE_LARGE_CONST
+#define LV_ATTRIBUTE_LARGE_CONST 
 
 /*Complier prefix for a big array declaration in RAM*/
 #define LV_ATTRIBUTE_LARGE_RAM_ARRAY

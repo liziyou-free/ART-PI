@@ -66,7 +66,7 @@ void CreateMyLvglDemo(void) {
 
     lv_style_init(&bg_style);
     //lv_style_set_bg_img_src(&bg_style,&background);
-	  lv_style_set_bg_img_src(&bg_style,UserPicScrPath(test.png));
+	  //lv_style_set_bg_img_src(&bg_style,UserPicScrPath(test.png));
     lv_style_set_bg_img_opa(&bg_style,255);
 
     lv_style_init(&bg_imgbtn_style);

@@ -133,7 +133,8 @@
 //#define RT_USING_DEVICE
 // </c>
 // </h>
-
+#define RT_USING_MEMHEAP
+#define RT_USING_MEMHEAP_AS_HEAP
 // <<< end of configuration section >>>
 
 #endif

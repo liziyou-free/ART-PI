@@ -1,0 +1,162 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 222 freedom, 222, LIC=HF82M-XR46U-VJ56J-UHBNL-4VUYC-8F1JN
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.36.0.0
+Toolchain Path:  D:\APP\KeilArm\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3DLL
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.53.0.0
+ 
+<h2>Project:</h2>
+G:\H7_History\STM32H750XB\MDK-ARM\STM32H750XB.uvprojx
+Project File Date:  09/06/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\APP\KeilArm\ARM\ARMCC\Bin'
+Build target 'STM32H750XB'
+Note: source file '../Middlewares/Third_Party/RealThread_RTOS/src/mem.c' - object file renamed from 'STM32H750XB\mem.o' to 'STM32H750XB\mem_1.o'.
+assembling startup_stm32h750xx.s...
+compiling main.c...
+..\Core\Src\main.c(139): warning:  #223-D: function "malloc" declared implicitly
+  	addd = malloc(1024*512);
+..\Core\Src\main.c(139): warning:  #513-D: a value of type "int" cannot be assigned to an entity of type "uint8_t *"
+  	addd = malloc(1024*512);
+..\Core\Src\main.c(142): warning:  #167-D: argument of type "const Mem_Region (*)[2]" is incompatible with parameter of type "const Mem_Region *"
+  	Mem_Manage_Init(&root,&poor);
+..\Core\Src\main.c(281): warning:  #223-D: function "LvgBspInit" declared implicitly
+  	LvgBspInit();
+..\Core\Src\main.c(283): warning:  #223-D: function "lv_demo_benchmark" declared implicitly
+  	lv_demo_benchmark();
+..\Core\Src\main.c(322): warning:  #188-D: enumerated type mixed with another type
+  		HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8, status);
+..\Core\Src\main.c(458): warning:  #1-D: last line of file ends without a newline
+  //  }
+..\Core\Src\main.c: 7 warnings, 0 errors
+linking...
+STM32H750XB\STM32H750XB.sct(33): warning: L6329W: Pattern stm32h7xx_hal_dma_ex.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(34): warning: L6329W: Pattern stm32h7xx_hal_mdma.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(35): warning: L6329W: Pattern stm32h7xx_hal_i2c.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(36): warning: L6329W: Pattern stm32h7xx_hal_i2c_ex.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(40): warning: L6329W: Pattern stm32h7xx_hal_ltdc_ex.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(42): warning: L6329W: Pattern stm32h7xx_hal_sai_ex.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(45): warning: L6329W: Pattern stm32h7xx_hal_sd_ex.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(58): warning: L6329W: Pattern lv_demo_keypad_encoder.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(59): warning: L6329W: Pattern lv_demo_widgets.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(60): warning: L6329W: Pattern img_clothes.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(61): warning: L6329W: Pattern img_demo_widgets_avatar.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(62): warning: L6329W: Pattern img_lvgl_logo.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(85): warning: L6329W: Pattern lv_draw_triangle.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(91): warning: L6329W: Pattern lv_snapshot.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(92): warning: L6329W: Pattern lv_theme_basic.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(94): warning: L6329W: Pattern lv_theme_mono.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(95): warning: L6329W: Pattern lv_animimg.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(101): warning: L6329W: Pattern lv_imgbtn.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(107): warning: L6329W: Pattern lv_span.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(115): warning: L6329W: Pattern lv_font_dejavu_16_persian_hebrew.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(117): warning: L6329W: Pattern lv_font_loader.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(118): warning: L6314W: No section matches pattern lv_font_montserrat_8.o(RO).
+STM32H750XB\STM32H750XB.sct(119): warning: L6314W: No section matches pattern lv_font_montserrat_10.o(RO).
+STM32H750XB\STM32H750XB.sct(120): warning: L6314W: No section matches pattern lv_font_montserrat_12.o(RO).
+STM32H750XB\STM32H750XB.sct(121): warning: L6329W: Pattern lv_font_montserrat_12_subpx.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(122): warning: L6314W: No section matches pattern lv_font_montserrat_14.o(RO).
+STM32H750XB\STM32H750XB.sct(124): warning: L6314W: No section matches pattern lv_font_montserrat_18.o(RO).
+STM32H750XB\STM32H750XB.sct(125): warning: L6314W: No section matches pattern lv_font_montserrat_20.o(RO).
+STM32H750XB\STM32H750XB.sct(126): warning: L6314W: No section matches pattern lv_font_montserrat_22.o(RO).
+STM32H750XB\STM32H750XB.sct(127): warning: L6314W: No section matches pattern lv_font_montserrat_24.o(RO).
+STM32H750XB\STM32H750XB.sct(128): warning: L6314W: No section matches pattern lv_font_montserrat_26.o(RO).
+STM32H750XB\STM32H750XB.sct(129): warning: L6314W: No section matches pattern lv_font_montserrat_28.o(RO).
+STM32H750XB\STM32H750XB.sct(130): warning: L6329W: Pattern lv_font_montserrat_28_compressed.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(131): warning: L6314W: No section matches pattern lv_font_montserrat_30.o(RO).
+STM32H750XB\STM32H750XB.sct(132): warning: L6314W: No section matches pattern lv_font_montserrat_32.o(RO).
+STM32H750XB\STM32H750XB.sct(133): warning: L6314W: No section matches pattern lv_font_montserrat_34.o(RO).
+STM32H750XB\STM32H750XB.sct(134): warning: L6314W: No section matches pattern lv_font_montserrat_36.o(RO).
+STM32H750XB\STM32H750XB.sct(135): warning: L6314W: No section matches pattern lv_font_montserrat_38.o(RO).
+STM32H750XB\STM32H750XB.sct(136): warning: L6314W: No section matches pattern lv_font_montserrat_40.o(RO).
+STM32H750XB\STM32H750XB.sct(137): warning: L6314W: No section matches pattern lv_font_montserrat_42.o(RO).
+STM32H750XB\STM32H750XB.sct(138): warning: L6314W: No section matches pattern lv_font_montserrat_44.o(RO).
+STM32H750XB\STM32H750XB.sct(139): warning: L6314W: No section matches pattern lv_font_montserrat_46.o(RO).
+STM32H750XB\STM32H750XB.sct(140): warning: L6314W: No section matches pattern lv_font_montserrat_48.o(RO).
+STM32H750XB\STM32H750XB.sct(141): warning: L6329W: Pattern lv_font_simsun_16_cjk.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(142): warning: L6329W: Pattern lv_font_unscii_8.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(143): warning: L6314W: No section matches pattern lv_font_unscii_16.o(RO).
+STM32H750XB\STM32H750XB.sct(144): warning: L6329W: Pattern lv_gpu_stm32_dma2d.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(149): warning: L6329W: Pattern lv_anim_timeline.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(151): warning: L6329W: Pattern lv_async.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(154): warning: L6329W: Pattern lv_gc.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(156): warning: L6314W: No section matches pattern lv_log.o(RO).
+STM32H750XB\STM32H750XB.sct(161): warning: L6314W: No section matches pattern lv_templ.o(RO).
+STM32H750XB\STM32H750XB.sct(170): warning: L6329W: Pattern lv_canvas.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(176): warning: L6314W: No section matches pattern lv_objx_templ.o(RO).
+STM32H750XB\STM32H750XB.sct(182): warning: L6329W: Pattern lodepng.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(183): warning: L6329W: Pattern lv_png.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(184): warning: L6329W: Pattern gifdec.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(185): warning: L6329W: Pattern lv_gif.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(187): warning: L6329W: Pattern MyGuiDemo.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(188): warning: L6329W: Pattern about.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(189): warning: L6329W: Pattern background.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(190): warning: L6329W: Pattern delet.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(191): warning: L6329W: Pattern image.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(192): warning: L6329W: Pattern mail.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(193): warning: L6329W: Pattern pos.o(RO) only matches removed unused sections.
+STM32H750XB\STM32H750XB.sct(194): warning: L6329W: Pattern ExternFont.o(RO) only matches removed unused sections.
+Program Size: Code=242616 RO-data=111044 RW-data=3104 ZI-data=25219080  
+Finished: 0 information, 66 warning and 0 error messages.
+FromELF: creating hex file...
+"STM32H750XB\STM32H750XB.axf" - 0 Error(s), 73 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.8.0.pack
+                ARM.CMSIS.5.8.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.5.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.ARM_Compiler.1.6.3.pack
+                Keil.ARM_Compiler.1.6.3
+                Keil ARM Compiler extensions for ARM Compiler 5 and ARM Compiler 6
+   * Component: Event Recorder Variant: DAP Version: 1.4.0
+   * Component: STDOUT Variant: EVR Version: 1.2.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32H7xx_DFP.2.8.0.pack
+                Keil.STM32H7xx_DFP.2.8.0
+                STMicroelectronics STM32H7 Series Device Support and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\Compiler
+  .\RTE\_STM32H750XB
+  D:\APP\KeilArm\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include
+  D:\APP\KeilArm\ARM\PACK\Keil\ARM_Compiler\1.6.3\Include
+  D:\APP\KeilArm\ARM\PACK\Keil\STM32H7xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.5.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+
+   * Component: Keil.ARM Compiler::Compiler:Event Recorder:DAP:1.4.0
+      Include file:  Config\EventRecorderConf.h
+      Source file:   Source\EventRecorder.c
+      Include file:  Include\EventRecorder.h
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:EVR:1.2.0
+      Source file:   Source\retarget_io.c
+Build Time Elapsed:  00:00:11
+</pre>
+</body>
+</html>

@@ -264,10 +264,16 @@ void Touch_scan(void *para){
 
 void LvglTask(void *para){
 	
+	#include "lv_disp.h"
+	extern  lv_disp_drv_t MyDisp_drv;
+	
 	lv_init();
+	//lv_timer_set_period(_lv_disp_get_refr_timer(&MyDisp_drv), 1);
 	LvgBspInit();
+
 	lv_demo_widgets();
-	//lv_demo_benchmark();
+  //lv_demo_music();
+	//lv_demo_benchmark_run_scene();
 	//lv_png_init();
 	//CreateMyLvglDemo();
 	while(true){

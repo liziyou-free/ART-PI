@@ -4,6 +4,7 @@
  */
  
  #include "lvglBsp.h"
+  #include "lv_hal_disp.h"
  #include "ltdc.h"
  #include "gt9147.h"
  #include "string.h"
@@ -117,7 +118,7 @@ void LvgBspInit(){
 	MyDisp_drv.draw_buf = &disp_buf; 
 	//MyDisp_drv.full_refresh = 1;
 	MyDisp_drv.flush_cb = my_flush_cb; 
-	MyDisp_drv.clean_dcache_cb = my_cleanDcache;
+	//MyDisp_drv.clean_dcache_cb = my_cleanDcache;
 	MyDisp_drv.hor_res = 800; 
 	MyDisp_drv.ver_res = 480; 
 	disp = lv_disp_drv_register(&MyDisp_drv);

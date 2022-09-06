@@ -5,7 +5,7 @@
  #pragma once
  
 #include "lvgl.h"
-
+#include "lvgl.h"
 
 void LvgBspInit();
  

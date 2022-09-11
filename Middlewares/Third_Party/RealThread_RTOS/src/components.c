@@ -20,6 +20,9 @@
 #include <rthw.h>
 #include <rtthread.h>
 
+char  rtthread_is_init = 0;
+
+
 #ifdef RT_USING_USER_MAIN
 #ifndef RT_MAIN_THREAD_STACK_SIZE
 #define RT_MAIN_THREAD_STACK_SIZE     2048
@@ -232,6 +235,8 @@ void rt_application_init(void)
  */
 int rtthread_startup(void)
 {
+	  rtthread_is_init = 1;
+	
     rt_hw_interrupt_disable();
 
     /* board level initialization

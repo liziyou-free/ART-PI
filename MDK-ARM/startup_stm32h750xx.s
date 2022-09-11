@@ -238,6 +238,9 @@ __Vectors_Size  EQU  __Vectors_End - __Vectors
 Reset_Handler    PROC
                  EXPORT  Reset_Handler                    [WEAK]
         IMPORT  SystemInit
+		IMPORT  MX_FMC_Init
+		IMPORT	HAL_Init
+		IMPORT	SystemClock_Config
         IMPORT  __main
 
                  LDR     R0, =SystemInit

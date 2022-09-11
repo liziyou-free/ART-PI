@@ -96,10 +96,9 @@ void MX_FMC_Init(void)
     SDRAM_Timing.RowCycleDelay=6;                                       //行循环延迟为6个时钟周期
     SDRAM_Timing.WriteRecoveryTime=2;                                   //恢复延迟为2个时钟周期
     SDRAM_Timing.RPDelay=2;                                             //行预充电延迟为2个时钟周期
-    SDRAM_Timing.RCDDelay=2;                                            //行到列延迟为2个时钟周期
-    HAL_SDRAM_Init(&SDRAM_Handler,&SDRAM_Timing);  
+    SDRAM_Timing.RCDDelay=2;                                            //行到列延迟为2个时钟周期 
 
-  if (HAL_SDRAM_Init(&SDRAM_Handler, &SdramTiming) != HAL_OK)
+  if (HAL_SDRAM_Init(&SDRAM_Handler, &SDRAM_Timing) != HAL_OK)
   {
     Error_Handler( );
   }

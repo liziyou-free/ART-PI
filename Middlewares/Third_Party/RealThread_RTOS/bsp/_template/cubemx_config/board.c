@@ -18,7 +18,7 @@
  * Please modify RT_HEAP_SIZE if you enable RT_USING_HEAP
  * the RT_HEAP_SIZE max value = (sram size - ZI size), 1024 means 1024 bytes
  */
-#define RT_HEAP_SIZE (120*1024)
+#define RT_HEAP_SIZE (40*1024)
 static rt_uint8_t rt_heap[RT_HEAP_SIZE] __attribute__ ((aligned (8)));
 
 RT_WEAK void *rt_heap_begin_get(void)
@@ -52,8 +52,8 @@ void rt_hw_board_init(void)
 {
     extern void SystemClock_Config(void);
     
-    HAL_Init();
-    SystemClock_Config();
+//    HAL_Init();
+//    SystemClock_Config();
 	
     //SystemCoreClockUpdate();
     /* 

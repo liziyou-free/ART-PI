@@ -965,8 +965,8 @@ HAL_StatusTypeDef HAL_ETH_Transmit(ETH_HandleTypeDef *heth, ETH_TxPacketConfig *
     return HAL_ERROR;
   }
 
-  if(heth->gState == HAL_ETH_STATE_READY)
-  {
+//  if(heth->gState == HAL_ETH_STATE_READY)
+//  {
     /* Config DMA Tx descriptor by Tx Packet info */
     if (ETH_Prepare_Tx_Descriptors(heth, pTxConfig, 0) != HAL_ETH_ERROR_NONE)
     {
@@ -1013,11 +1013,12 @@ HAL_StatusTypeDef HAL_ETH_Transmit(ETH_HandleTypeDef *heth, ETH_TxPacketConfig *
 
     /* Return function status */
     return HAL_OK;
-  }
-  else
-  {
-    return HAL_ERROR;
-  }
+//  }
+//  else
+//  {
+//    return HAL_ERROR;
+//  }
+	return HAL_ERROR;
 }
 
 /**

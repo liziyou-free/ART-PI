@@ -52,7 +52,7 @@
 // </c>
 // <c1>using idle hook
 //  <i>using idle hook
-#define RT_USING_IDLE_HOOK
+//#define RT_USING_IDLE_HOOK
 // </c>
 // </h>
 

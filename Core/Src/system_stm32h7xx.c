@@ -258,7 +258,11 @@ void SystemInit (void)
    * This, prevents CPU speculation access on this bank which blocks the use of FMC during
    * 24us. During this time the others FMC master (such as LTDC) cannot use it!
    */
-  FMC_Bank1_R->BTCR[0] = 0x000030D2;
+  //FMC_Bank1_R->BTCR[0] = 0x000030D2;
+	
+	/*	启动过程中就初始化外部SDRAM 解决将heap放到外部SDRAM后 __main()执行分散加载时，
+	    操作未使能的sdram区域 导致内存异常的问题
+	*/
 
   /* Configure the Vector Table location add offset address for cortex-M7 ------------------*/
 #ifdef VECT_TAB_SRAM
@@ -269,6 +273,15 @@ void SystemInit (void)
 
 #endif /*DUAL_CORE && CORE_CM4*/
 
+
+	extern void SystemClock_Config(void);
+	extern void MX_FMC_Init(void);
+	extern void  MX_GPIO_Init(void);
+
+	HAL_Init();
+  SystemClock_Config();
+	MX_GPIO_Init();
+	MX_FMC_Init();
 }
 
 /**

@@ -1,23 +1,3 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
 #include "dma2d.h"
@@ -28,77 +8,29 @@
 #include "sdmmc.h"
 #include "gpio.h"
 #include "fmc.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+#include "sockets.h"
+#include "lwip.h"
 #include "MusicDecode.h"
-#include "Mem.h"
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
+uint8_t *FontBuffer;
 
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-	uint8_t FontBuffer[1024*1024*5] __attribute__((at(0xC0700000)));
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
 static void MPU_Config( void );
 void Touch_scan(void *para);
 void LvglTask(void *para);
 void LedTask(void *p);
 void AudioTask(void *para);
-/* USER CODE END PFP */
+void NetTask(void *para);
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-	   FRESULT res;
-	   rt_thread_t task0;
-	   rt_thread_t task1;
-		 rt_thread_t task2;
-		 rt_thread_t task3;
-  /* USER CODE END 1 */
+	FRESULT res;
+	rt_thread_t task0;
+	rt_thread_t task1;
+	rt_thread_t task2;
+	rt_thread_t task3;
+	rt_thread_t task4;
 
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  //HAL_Init();
-
-  /* USER CODE BEGIN Init */
-  
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
- // SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-	 
 	 MPU_Config();
 	 SCB_EnableICache();
 	 SCB_EnableDCache();
@@ -112,35 +44,17 @@ int main(void)
 	HAL_NVIC_SetPriority(DMA2D_IRQn,2,5);
   HAL_NVIC_EnableIRQ(DMA2D_IRQn);
 
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+ // MX_GPIO_Init();
   MX_DMA_Init();
   MX_LTDC_Init();
-  MX_FMC_Init();
-  //MX_QUADSPI_Init();
+  //MX_FMC_Init();
   MX_DMA2D_Init();
   MX_SDMMC1_SD_Init();
   MX_FATFS_Init();
   MX_SAI1_Init();
-	
-  /* USER CODE BEGIN 2 */
-	MX_FATFS_Init();	
-	res = f_mount(&SDFatFS, "0", 0);
-	
-	/*		LVGL font24 加载到 SDRAM	5.6MB	*/
-	static FIL  ExFont24;
-	static UINT br;
-	res |= f_open(&ExFont24 , "0:/LvglFont/Font24.bin" , FA_READ);
-	res |= f_read(&ExFont24 , FontBuffer , ExFont24.obj.objsize , &br);
-	res |= f_close(&ExFont24);
-	if(res != FR_OK){
-		while(1);
-	}
-	
-	GT9147_Init();
-	LCD_Fill(0,0,800,480,0);
+	MX_LWIP_Init();
+	MX_FATFS_Init();
+	f_mount(&SDFatFS, "0", 0);
 	
 	task0 = rt_thread_create("Lvgl",LvglTask,0,1024*4,22,0);
 	rt_thread_startup(task0);
@@ -154,24 +68,171 @@ int main(void)
 	task3 = rt_thread_create("Music",AudioTask,"0:test.wav",1024*2,2,0);
 	rt_thread_startup(task3);
 	
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+  task4 = rt_thread_create("Net",NetTask,0,1024*2,16,5);
+	rt_thread_startup(task4);
+	
   while (1)
   {	
 		return 0;
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
   }
-  /* USER CODE END 3 */
 }
 
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+
+
+
+void Touch_scan(void *para){
+	
+	GT9147_Init();
+	
+	while(true){
+//	 lv_tick_inc(1);
+	 GT9147_Scan(0);
+	 rt_thread_mdelay(1);
+	}
+}
+
+
+
+void LvglTask(void *para){
+	
+	#include "lv_disp.h"
+	extern  lv_disp_drv_t MyDisp_drv;
+	static FIL  ExFont24;
+	static UINT br;
+	FRESULT res;
+	
+	/*		LVGL font24 加载到 SDRAM	5.6MB	*/
+	FontBuffer = malloc(1024*1024*6);
+	res |= f_open(&ExFont24 , "0:/LvglFont/Font24.bin" , FA_READ);
+	res |= f_read(&ExFont24 , FontBuffer , ExFont24.obj.objsize , &br);
+	res |= f_close(&ExFont24);
+	if(res != FR_OK){
+		while(1);
+	}
+	LCD_Fill(0,0,800,480,0);
+	lv_init();
+	LvgBspInit();
+	lv_timer_t *time = _lv_disp_get_refr_timer(NULL);
+	lv_timer_set_period(time, 3);
+	
+	//lv_demo_benchmark();
+	//lv_demo_widgets();
+  lv_demo_music();
+
+	//lv_png_init();
+	//CreateMyLvglDemo();
+	while(true){
+		lv_task_handler();
+		rt_thread_mdelay(1);
+	}
+}
+
+
+uint8_t *NetBuf ;
+
+static int SendAll(int s, char*dataptr, size_t size){
+  int size_done = 0;
+  do{
+		rt_thread_mdelay(5);
+    size_done = write(s,dataptr, size);
+    size = size-size_done;
+    dataptr += size_done;
+    if(size_done<0)
+      return 1;      //发生错误
+ }while(size_done>0);
+ 
+ return 0;
+}
+
+
+extern struct netif gnetif;
+
+void NetTask(void *para){
+	
+	int sct = 0; 
+  int res = 0;
+  struct sockaddr_in ip ;
+  memset(&ip,0,sizeof(struct sockaddr));
+  ip.sin_port = htons(1222);
+  ip.sin_family = AF_INET;
+  ip.sin_addr.s_addr = inet_addr("192.168.0.2");
+
+	while(!netif_is_link_up(&gnetif))
+	{
+		rt_thread_mdelay(200);
+	}
+	
+	NetBuf= malloc(1024*200);
+  *	NetBuf = '#';
+	if(!NetBuf){
+		while(1)
+		rt_thread_mdelay(5);
+	}
+	restart:
+	sct = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
+  if(sct<0){    //创建失败
+    close(sct);
+    goto restart;
+  }
+  res = connect(sct,(struct sockaddr*)&ip,sizeof(struct sockaddr));
+  if(res<0){
+    close(sct);
+		rt_thread_mdelay(5);
+    goto restart;
+  }
+	while(1){
+//		res = read(sct, &NetBuf, 1024*10);
+//		if(res){
+//			SendAll(sct,NetBuf,res);
+//		}
+//		else{
+//			close(sct);
+//      return;
+//		}
+		if( SendAll(sct,NetBuf, 1024*200 ) > 0){
+			close(sct);
+			rt_thread_mdelay(10);
+			goto restart;
+		}
+	}
+	
+}
+
+
+void AudioTask(void *para){
+	while(true){
+	 AudioPlayer(para);
+	 rt_thread_mdelay(100);
+	}
+}
+
+
+void LedTask(void *p){
+	
+	static uint8_t status = 0;
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOI_CLK_ENABLE();
+	
+	/*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : PI8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
+	
+	while(true){
+		status = !status;
+		HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8, status);
+		rt_thread_mdelay(200);
+	}
+}
+
+
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -232,130 +293,41 @@ void SystemClock_Config(void)
   PeriphClkInitStruct.PLL3.PLL3N = 192;
   PeriphClkInitStruct.PLL3.PLL3P = 2;
   PeriphClkInitStruct.PLL3.PLL3Q = 2;
-  PeriphClkInitStruct.PLL3.PLL3R = 8;
+  PeriphClkInitStruct.PLL3.PLL3R = 7;  //
   PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_3;
   PeriphClkInitStruct.PLL3.PLL3VCOSEL = RCC_PLL3VCOMEDIUM;
   PeriphClkInitStruct.PLL3.PLL3FRACN = 0;
-  PeriphClkInitStruct.FmcClockSelection = RCC_FMCCLKSOURCE_D1HCLK;
+  PeriphClkInitStruct.FmcClockSelection = RCC_FMCCLKSOURCE_D1HCLK;// RCC_FMCCLKSOURCE_PLL;
   PeriphClkInitStruct.QspiClockSelection = RCC_QSPICLKSOURCE_D1HCLK;
   PeriphClkInitStruct.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL;
   PeriphClkInitStruct.Sai1ClockSelection = RCC_SAI1CLKSOURCE_PLL;
+	
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();
   }
 }
 
-/* USER CODE BEGIN 4 */
-
-
-void Touch_scan(void *para){
-	
-	GT9147_Init();
-	
-	while(true){
-//	 lv_tick_inc(1);
-	 GT9147_Scan(0);
-	 rt_thread_mdelay(10);
-	}
-}
-
-
-
-void LvglTask(void *para){
-	
-	#include "lv_disp.h"
-	extern  lv_disp_drv_t MyDisp_drv;
-	
-	lv_init();
-	//lv_timer_set_period(_lv_disp_get_refr_timer(&MyDisp_drv), 1);
-	LvgBspInit();
-
-	lv_demo_widgets();
-  //lv_demo_music();
-	//lv_demo_benchmark_run_scene();
-	//lv_png_init();
-	//CreateMyLvglDemo();
-	while(true){
-		lv_task_handler();
-		rt_thread_mdelay(1);
-	}
-}
-
-
-
-void AudioTask(void *para){
-	while(true){
-	 AudioPlayer(para);
-	 rt_thread_mdelay(100);
-	}
-}
-
-
-void LedTask(void *p){
-	
-	static uint8_t status = 0;
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	
-	/* GPIO Ports Clock Enable */
-	__HAL_RCC_GPIOI_CLK_ENABLE();
-	
-	/*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8, GPIO_PIN_SET);
-
-  /*Configure GPIO pin : PI8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
-	
-	while(true){
-		status = !status;
-		HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8, status);
-		rt_thread_mdelay(200);
-	}
-}
-
 
 static void MPU_Config( void )
 {
-	MPU_Region_InitTypeDef MPU_InitStruct;
+	
+ MPU_Region_InitTypeDef MPU_InitStruct;
 
-	HAL_MPU_Disable();
-
-#if 1
+ HAL_MPU_Disable();
 
 	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
 	MPU_InitStruct.BaseAddress      = 0x24000000;
 	MPU_InitStruct.Size             = MPU_REGION_SIZE_512KB;
 	MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-	MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
-	MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-	MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
+  MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
+  MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
 	MPU_InitStruct.Number           = MPU_REGION_NUMBER0;
 	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
 	MPU_InitStruct.SubRegionDisable = 0x00;
 	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-
 	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-
- #else
- 
-	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-	MPU_InitStruct.BaseAddress      = 0x24000000;
-	MPU_InitStruct.Size             = MPU_REGION_SIZE_512KB;
-	MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-	MPU_InitStruct.IsBufferable     = MPU_ACCESS_NOT_BUFFERABLE;
-	MPU_InitStruct.IsCacheable      = MPU_ACCESS_NOT_CACHEABLE;
-	MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-	MPU_InitStruct.Number           = MPU_REGION_NUMBER0;
-	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
-	MPU_InitStruct.SubRegionDisable = 0x00;
-	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-
-	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-#endif
 	
 	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
 	MPU_InitStruct.BaseAddress      = 0xC0000000;
@@ -368,10 +340,7 @@ static void MPU_Config( void )
 	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
 	MPU_InitStruct.SubRegionDisable = 0x00;
 	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-	
 	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-
-
 
 	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
 	MPU_InitStruct.BaseAddress      = 0x90000000;
@@ -384,9 +353,7 @@ static void MPU_Config( void )
 	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
 	MPU_InitStruct.SubRegionDisable = 0x00;
 	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-	
 	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-	
 	
 	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
 	MPU_InitStruct.BaseAddress      = 0x80000000;
@@ -399,23 +366,58 @@ static void MPU_Config( void )
 	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
 	MPU_InitStruct.SubRegionDisable = 0x00;
 	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
+	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 	
+	/* Configure the MPU attributes as Normal Non Cacheable
+     for LwIP RAM heap which contains the Tx buffers */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.BaseAddress = 0x30020000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_128KB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER4;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
+  MPU_InitStruct.SubRegionDisable = 0x00;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+  
+	/* Configure the MPU attributes as Device not cacheable 
+     for ETH DMA descriptors */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.BaseAddress = 0x30040000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_32KB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER5;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
+  MPU_InitStruct.SubRegionDisable = 0x00;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+	
+	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
+	MPU_InitStruct.BaseAddress      = 0x20000000;
+	MPU_InitStruct.Size             = MPU_REGION_SIZE_128KB;
+	MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+	MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
+	MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
+	MPU_InitStruct.IsShareable      = MPU_ACCESS_SHAREABLE;
+	MPU_InitStruct.Number           = MPU_REGION_NUMBER6;
+	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
+	MPU_InitStruct.SubRegionDisable = 0x00;
+	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
+	HAL_MPU_ConfigRegion(&MPU_InitStruct);
 	
 	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 }
 
-/* USER CODE END 4 */
 
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
 
-  /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -428,24 +430,13 @@ void Error_Handler(void)
   */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+
 }
 #endif /* USE_FULL_ASSERT */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
+//  ARM_LIB_HEAP  0xC0100000 UNINIT 0x2000000 { ; 
 
-
-
-
-//  RW_IRAM3 0xC1D00000 0x900000  {
-//  ;; Heap starts at 1MB and grows upwards
-//  ARM_LIB_HEAP 0xC1D00000  EMPTY 0x900000
-//  {
-//  
-//   }
-//   .ANY (+RW +ZI)
+//	.ANY (HEAP)                                        
 //  }

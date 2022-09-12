@@ -153,24 +153,7 @@
           <Name>-U066FFF554957886687141516 -O2254 -SF20000 -C0 -A0 -I0 -HNlocalhost -HP7184 -P1 -N00("ARM CoreSight SW-DP (ARM Core") -D00(6BA02477) -L00(0) -TO131091 -TC400000000 -TT400000000 -TP21 -TDS80C7 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO3 -FD20000004 -FCB000 -FN2 -FF0STM32H7x_128k.FLM -FS08000000 -FL0200000 -FP0($$Device:STM32H750XBHx$CMSIS\Flash\STM32H7x_128k.FLM) -FF1ART-Pi_W25Q64 -FS190000000 -FL1800000</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>406</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>-1879029350</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_eth.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\STM32H750XB\../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_eth.c\406</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -192,16 +175,6 @@
           <WinNumber>1</WinNumber>
           <ItemText>heth</ItemText>
         </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sid</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>delay</ItemText>
-        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -213,8 +186,8 @@
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
-          <SubType>1</SubType>
-          <ItemText>0x40028000</ItemText>
+          <SubType>0</SubType>
+          <ItemText>FontBuffer+0x5e7e50</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -237,7 +210,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
-        <aLwin>1</aLwin>
+        <aLwin>0</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>

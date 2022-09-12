@@ -75,7 +75,7 @@ a lot of data that needs to be copied, this should be set high. */
 /* Relocate the LwIP RAM heap pointer */
 #define LWIP_RAM_HEAP_POINTER    (0x30020000)
 
-#define MEMP_NUM_PBUF						1024
+#define MEMP_NUM_PBUF						4096
 
 #define MEMP_NUM_NETBUF        12
 

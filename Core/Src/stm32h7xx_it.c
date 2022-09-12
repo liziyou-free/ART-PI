@@ -169,7 +169,8 @@ void DebugMon_Handler(void)
 void DMA1_Stream0_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Stream0_IRQn 0 */
-  
+  rt_interrupt_enter();
+	
 	if(DMA1_Stream0->CR&DMA_SxCR_CT){
 		rt_mq_send_wait(mq_music , WRITE_TO_BUFF1 , strlen(WRITE_TO_BUFF1) + 1 , 2);	
 	}else{
@@ -178,7 +179,7 @@ void DMA1_Stream0_IRQHandler(void)
   /* USER CODE END DMA1_Stream0_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_sai1_a);
   /* USER CODE BEGIN DMA1_Stream0_IRQn 1 */
-
+  rt_interrupt_leave();
   /* USER CODE END DMA1_Stream0_IRQn 1 */
 }
 
@@ -188,11 +189,11 @@ void DMA1_Stream0_IRQHandler(void)
 void ETH_IRQHandler(void)
 {
   /* USER CODE BEGIN ETH_IRQn 0 */
-
+   rt_interrupt_enter();
   /* USER CODE END ETH_IRQn 0 */
   HAL_ETH_IRQHandler(&heth);
   /* USER CODE BEGIN ETH_IRQn 1 */
-
+   rt_interrupt_leave();
   /* USER CODE END ETH_IRQn 1 */
 }
 
@@ -202,11 +203,11 @@ void ETH_IRQHandler(void)
 void SDMMC1_IRQHandler(void)
 {
   /* USER CODE BEGIN SDMMC1_IRQn 0 */
-
+   rt_interrupt_enter();
   /* USER CODE END SDMMC1_IRQn 0 */
   HAL_SD_IRQHandler(&hsd1);
   /* USER CODE BEGIN SDMMC1_IRQn 1 */
-
+  rt_interrupt_leave();
   /* USER CODE END SDMMC1_IRQn 1 */
 }
 
@@ -216,11 +217,11 @@ void SDMMC1_IRQHandler(void)
 void LTDC_IRQHandler(void)
 {
   /* USER CODE BEGIN LTDC_IRQn 0 */
-
+   rt_interrupt_enter();
   /* USER CODE END LTDC_IRQn 0 */
   HAL_LTDC_IRQHandler(&hltdc);
   /* USER CODE BEGIN LTDC_IRQn 1 */
-
+    rt_interrupt_leave();
   /* USER CODE END LTDC_IRQn 1 */
 }
 
@@ -232,10 +233,15 @@ extern void lv_disp_flush_ready(lv_disp_drv_t * disp_drv);
 extern lv_disp_drv_t MyDisp_drv;
 
 void DMA2D_IRQHandler(void){
-	if(DMA2D->ISR&0x02){
-		 lv_disp_flush_ready(&MyDisp_drv);
-		 DMA2D->IFCR|=0x02;
-	}
+	
+	  rt_interrupt_enter();
+	
+		if(DMA2D->ISR&0x02){
+			 lv_disp_flush_ready(&MyDisp_drv);
+			 DMA2D->IFCR|=0x02;
+		}
+
+    rt_interrupt_leave();		
 }
 
 

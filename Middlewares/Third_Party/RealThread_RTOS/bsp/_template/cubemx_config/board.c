@@ -19,7 +19,7 @@
  * the RT_HEAP_SIZE max value = (sram size - ZI size), 1024 means 1024 bytes
  */
 #define RT_HEAP_SIZE (40*1024)
-static rt_uint8_t rt_heap[RT_HEAP_SIZE] __attribute__ ((aligned (8)));
+static rt_uint8_t rt_heap[RT_HEAP_SIZE] __attribute__((section("axi_ram"))); 
 
 RT_WEAK void *rt_heap_begin_get(void)
 {
@@ -34,12 +34,12 @@ RT_WEAK void *rt_heap_end_get(void)
 
 void SysTick_Handler(void)
 {
-		HAL_IncTick();
-	
-	  //lv_tick_inc(1);
-	
     rt_interrupt_enter();
     
+	//lv_tick_inc(1);
+	
+	  HAL_IncTick();
+	
     rt_tick_increase();
 
     rt_interrupt_leave();

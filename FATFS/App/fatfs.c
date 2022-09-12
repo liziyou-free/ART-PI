@@ -20,7 +20,8 @@
 
 uint8_t retSD;    /* Return value for SD */
 char SDPath[4];   /* SD logical drive path */
-FATFS SDFatFS;    /* File system object for SD logical drive */
+/* File system object for SD logical drive */
+FATFS SDFatFS __attribute__((section("axi_ram")));   //必须定位到axi-ram 否则可能读写失败 
 FIL SDFile;       /* File object for SD */
 
 /* USER CODE BEGIN Variables */

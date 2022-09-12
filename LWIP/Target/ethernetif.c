@@ -48,7 +48,7 @@
 #define IFNAME1 't'
 
 /* ETH Setting  */
-#define ETH_DMA_TRANSMIT_TIMEOUT               ( 1000U )
+#define ETH_DMA_TRANSMIT_TIMEOUT               ( 20U )
 /* ETH_RX_BUFFER_SIZE parameter is defined in lwipopts.h */
 
 /* USER CODE BEGIN 1 */
@@ -187,7 +187,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(ETH_IRQn, 0, 1);
+    HAL_NVIC_SetPriority(ETH_IRQn, 0, 4);
     HAL_NVIC_EnableIRQ(ETH_IRQn);
   /* USER CODE BEGIN ETH_MspInit 1 */
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);

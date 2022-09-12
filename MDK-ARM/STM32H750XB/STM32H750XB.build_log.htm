@@ -30,114 +30,115 @@ Build target 'STM32H750XB'
 Note: source file '..\Middlewares\Third_Party\LwIP\src\core\mem.c' - object file renamed from 'STM32H750XB\mem.o' to 'STM32H750XB\mem_1.o'.
 compiling context_rvds.S...
 compiling main.c...
-..\Core\Src\main.c(27): warning:  #177-D: variable "res"  was declared but never referenced
-  	FRESULT res;
-..\Core\Src\main.c(114): warning:  #223-D: function "LvgBspInit" declared implicitly
+..\Core\Src\main.c(113): warning:  #223-D: function "LvgBspInit" declared implicitly
   	LvgBspInit();
-..\Core\Src\main.c(120): warning:  #223-D: function "lv_demo_music" declared implicitly
+..\Core\Src\main.c(119): warning:  #223-D: function "lv_demo_music" declared implicitly
     lv_demo_music();
-..\Core\Src\main.c(192): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
-  		if( SendAll(sct,NetBuf, 1024*200 ) > 0){
-..\Core\Src\main.c(230): warning:  #188-D: enumerated type mixed with another type
+..\Core\Src\main.c(179): warning:  #940-D: missing return statement at end of non-void function "SendAllData" 
+  }
+..\Core\Src\main.c(228): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  		if( SendAllData(sct,NetBuf, 1024*200 )){
+..\Core\Src\main.c(266): warning:  #188-D: enumerated type mixed with another type
   		HAL_GPIO_WritePin(GPIOI, GPIO_PIN_8, status);
-..\Core\Src\main.c(442): warning:  #1-D: last line of file ends without a newline
+..\Core\Src\main.c(483): warning:  #1-D: last line of file ends without a newline
   //  }
 ..\Core\Src\main.c: 6 warnings, 0 errors
 linking...
-.\ART-PI.sct(59): warning: L6312W: Empty Execution region description for region RW_IRAM1
-.\ART-PI.sct(23): warning: L6329W: Pattern stm32h7xx_hal_flash_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(24): warning: L6329W: Pattern stm32h7xx_hal_flash.o(RO) only matches removed unused sections.
-.\ART-PI.sct(35): warning: L6314W: No section matches pattern tlsf.o(RO).
-.\ART-PI.sct(40): warning: L6329W: Pattern cpu_cache.o(RO) only matches removed unused sections.
-.\ART-PI.sct(43): warning: L6314W: No section matches pattern cpu.o(RO).
-.\ART-PI.sct(49): warning: L6329W: Pattern mempool.o(RO) only matches removed unused sections.
-.\ART-PI.sct(52): warning: L6314W: No section matches pattern slab.o(RO).
-.\ART-PI.sct(62): warning: L6314W: No section matches pattern *(lwip_heap).
-.\ART-PI.sct(80): warning: L6314W: No section matches pattern i2s.o(RO).
-.\ART-PI.sct(86): warning: L6329W: Pattern stm32h7xx_hal_eth_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(88): warning: L6329W: Pattern stm32h7xx_hal_hsem.o(RO) only matches removed unused sections.
-.\ART-PI.sct(90): warning: L6329W: Pattern stm32h7xx_hal_dma_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(92): warning: L6329W: Pattern stm32h7xx_hal_i2c.o(RO) only matches removed unused sections.
-.\ART-PI.sct(93): warning: L6329W: Pattern stm32h7xx_hal_i2c_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(94): warning: L6329W: Pattern stm32h7xx_hal_exti.o(RO) only matches removed unused sections.
-.\ART-PI.sct(97): warning: L6329W: Pattern stm32h7xx_hal_ltdc_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(99): warning: L6329W: Pattern stm32h7xx_hal_sai_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(103): warning: L6329W: Pattern stm32h7xx_hal_sd_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(104): warning: L6329W: Pattern stm32h7xx_hal_tim.o(RO) only matches removed unused sections.
-.\ART-PI.sct(105): warning: L6329W: Pattern stm32h7xx_hal_tim_ex.o(RO) only matches removed unused sections.
-.\ART-PI.sct(106): warning: L6314W: No section matches pattern stm32h7xx_hal_i2s.o(RO).
-.\ART-PI.sct(107): warning: L6314W: No section matches pattern stm32h7xx_hal_i2s_ex.o(RO).
-.\ART-PI.sct(111): warning: L6329W: Pattern img_benchmark_cogwheel_alpha16.o(RO) only matches removed unused sections.
-.\ART-PI.sct(112): warning: L6329W: Pattern img_benchmark_cogwheel_argb.o(RO) only matches removed unused sections.
-.\ART-PI.sct(113): warning: L6329W: Pattern img_benchmark_cogwheel_chroma_keyed.o(RO) only matches removed unused sections.
-.\ART-PI.sct(114): warning: L6329W: Pattern img_benchmark_cogwheel_indexed16.o(RO) only matches removed unused sections.
-.\ART-PI.sct(115): warning: L6329W: Pattern img_benchmark_cogwheel_rgb.o(RO) only matches removed unused sections.
-.\ART-PI.sct(116): warning: L6329W: Pattern lv_demo_benchmark.o(RO) only matches removed unused sections.
-.\ART-PI.sct(117): warning: L6314W: No section matches pattern lv_font_montserrat_12_compr_az.o(RO).
-.\ART-PI.sct(118): warning: L6314W: No section matches pattern lv_font_montserrat_16_compr_az.o(RO).
-.\ART-PI.sct(119): warning: L6314W: No section matches pattern lv_font_montserrat_28_compr_az.o(RO).
-.\ART-PI.sct(120): warning: L6314W: No section matches pattern lv_demo_keypad_encoder.o(RO).
-.\ART-PI.sct(121): warning: L6329W: Pattern lv_demo_widgets.o(RO) only matches removed unused sections.
-.\ART-PI.sct(122): warning: L6329W: Pattern img_clothes.o(RO) only matches removed unused sections.
-.\ART-PI.sct(123): warning: L6329W: Pattern img_demo_widgets_avatar.o(RO) only matches removed unused sections.
-.\ART-PI.sct(124): warning: L6329W: Pattern img_lvgl_logo.o(RO) only matches removed unused sections.
-.\ART-PI.sct(126): warning: L6314W: No section matches pattern lv_font_dejavu_16_persian_hebrew.o(RO).
-.\ART-PI.sct(128): warning: L6329W: Pattern lv_font_loader.o(RO) only matches removed unused sections.
-.\ART-PI.sct(129): warning: L6314W: No section matches pattern lv_font_montserrat_8.o(RO).
-.\ART-PI.sct(130): warning: L6314W: No section matches pattern lv_font_montserrat_10.o(RO).
-.\ART-PI.sct(132): warning: L6314W: No section matches pattern lv_font_montserrat_12_subpx.o(RO).
-.\ART-PI.sct(133): warning: L6314W: No section matches pattern lv_font_montserrat_14.o(RO).
-.\ART-PI.sct(135): warning: L6314W: No section matches pattern lv_font_montserrat_18.o(RO).
-.\ART-PI.sct(136): warning: L6314W: No section matches pattern lv_font_montserrat_20.o(RO).
-.\ART-PI.sct(137): warning: L6314W: No section matches pattern lv_font_montserrat_22.o(RO).
-.\ART-PI.sct(138): warning: L6314W: No section matches pattern lv_font_montserrat_24.o(RO).
-.\ART-PI.sct(139): warning: L6314W: No section matches pattern lv_font_montserrat_26.o(RO).
-.\ART-PI.sct(140): warning: L6314W: No section matches pattern lv_font_montserrat_28.o(RO).
-.\ART-PI.sct(141): warning: L6314W: No section matches pattern lv_font_montserrat_28_compressed.o(RO).
-.\ART-PI.sct(142): warning: L6314W: No section matches pattern lv_font_montserrat_30.o(RO).
-.\ART-PI.sct(143): warning: L6314W: No section matches pattern lv_font_montserrat_32.o(RO).
-.\ART-PI.sct(144): warning: L6314W: No section matches pattern lv_font_montserrat_34.o(RO).
-.\ART-PI.sct(145): warning: L6314W: No section matches pattern lv_font_montserrat_36.o(RO).
-.\ART-PI.sct(146): warning: L6314W: No section matches pattern lv_font_montserrat_38.o(RO).
-.\ART-PI.sct(147): warning: L6314W: No section matches pattern lv_font_montserrat_40.o(RO).
-.\ART-PI.sct(148): warning: L6314W: No section matches pattern lv_font_montserrat_42.o(RO).
-.\ART-PI.sct(149): warning: L6314W: No section matches pattern lv_font_montserrat_44.o(RO).
-.\ART-PI.sct(150): warning: L6314W: No section matches pattern lv_font_montserrat_46.o(RO).
-.\ART-PI.sct(151): warning: L6314W: No section matches pattern lv_font_montserrat_48.o(RO).
-.\ART-PI.sct(152): warning: L6314W: No section matches pattern lv_font_simsun_16_cjk.o(RO).
-.\ART-PI.sct(153): warning: L6314W: No section matches pattern lv_font_unscii_8.o(RO).
-.\ART-PI.sct(154): warning: L6314W: No section matches pattern lv_font_unscii_16.o(RO).
-.\ART-PI.sct(156): warning: L6329W: Pattern gifdec.o(RO) only matches removed unused sections.
-.\ART-PI.sct(157): warning: L6329W: Pattern lv_gif.o(RO) only matches removed unused sections.
-.\ART-PI.sct(159): warning: L6314W: No section matches pattern about.o(RO).
-.\ART-PI.sct(160): warning: L6314W: No section matches pattern background.o(RO).
-.\ART-PI.sct(161): warning: L6314W: No section matches pattern delet.o(RO).
-.\ART-PI.sct(162): warning: L6314W: No section matches pattern image.o(RO).
-.\ART-PI.sct(163): warning: L6314W: No section matches pattern mail.o(RO).
-.\ART-PI.sct(164): warning: L6314W: No section matches pattern pos.o(RO).
-.\ART-PI.sct(165): warning: L6329W: Pattern ExternFont.o(RO) only matches removed unused sections.
-.\ART-PI.sct(166): warning: L6314W: No section matches pattern MyGuiDemo.o(RO).
-.\ART-PI.sct(178): warning: L6329W: Pattern if_api.o(RO) only matches removed unused sections.
-.\ART-PI.sct(180): warning: L6329W: Pattern netdb.o(RO) only matches removed unused sections.
-.\ART-PI.sct(181): warning: L6329W: Pattern netifapi.o(RO) only matches removed unused sections.
-.\ART-PI.sct(184): warning: L6329W: Pattern altcp.o(RO) only matches removed unused sections.
-.\ART-PI.sct(185): warning: L6329W: Pattern altcp_alloc.o(RO) only matches removed unused sections.
-.\ART-PI.sct(186): warning: L6314W: No section matches pattern altcp_tcp.o(RO).
-.\ART-PI.sct(188): warning: L6329W: Pattern dns.o(RO) only matches removed unused sections.
-.\ART-PI.sct(191): warning: L6329W: Pattern ip.o(RO) only matches removed unused sections.
-.\ART-PI.sct(192): warning: L6329W: Pattern mem.o(RO) only matches removed unused sections.
-.\ART-PI.sct(196): warning: L6329W: Pattern raw.o(RO) only matches removed unused sections.
-.\ART-PI.sct(197): warning: L6329W: Pattern stats.o(RO) only matches removed unused sections.
-.\ART-PI.sct(198): warning: L6329W: Pattern sys.o(RO) only matches removed unused sections.
-.\ART-PI.sct(204): warning: L6329W: Pattern autoip.o(RO) only matches removed unused sections.
-.\ART-PI.sct(205): warning: L6329W: Pattern dhcp.o(RO) only matches removed unused sections.
-.\ART-PI.sct(208): warning: L6329W: Pattern igmp.o(RO) only matches removed unused sections.
-.\ART-PI.sct(212): warning: L6314W: No section matches pattern mld6.o(RO).
-.\ART-PI.sct(214): warning: L6329W: Pattern mqtt.o(RO) only matches removed unused sections.
-Program Size: Code=399812 RO-data=407252 RW-data=130896 ZI-data=17812760  
-Finished: 0 information, 90 warning and 0 error messages.
+.\ART-PI.sct(14): warning: L6314W: No section matches pattern *armlib/h_*(RO).
+.\ART-PI.sct(28): warning: L6329W: Pattern stm32h7xx_hal_flash_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(29): warning: L6329W: Pattern stm32h7xx_hal_flash.o(RO) only matches removed unused sections.
+.\ART-PI.sct(40): warning: L6314W: No section matches pattern tlsf.o(RO).
+.\ART-PI.sct(45): warning: L6329W: Pattern cpu_cache.o(RO) only matches removed unused sections.
+.\ART-PI.sct(48): warning: L6314W: No section matches pattern cpu.o(RO).
+.\ART-PI.sct(54): warning: L6329W: Pattern mempool.o(RO) only matches removed unused sections.
+.\ART-PI.sct(57): warning: L6314W: No section matches pattern slab.o(RO).
+.\ART-PI.sct(67): warning: L6314W: No section matches pattern *(lwip_heap).
+.\ART-PI.sct(86): warning: L6314W: No section matches pattern i2s.o(RO).
+.\ART-PI.sct(92): warning: L6329W: Pattern stm32h7xx_hal_eth_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(94): warning: L6329W: Pattern stm32h7xx_hal_hsem.o(RO) only matches removed unused sections.
+.\ART-PI.sct(96): warning: L6329W: Pattern stm32h7xx_hal_dma_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(98): warning: L6329W: Pattern stm32h7xx_hal_i2c.o(RO) only matches removed unused sections.
+.\ART-PI.sct(99): warning: L6329W: Pattern stm32h7xx_hal_i2c_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(100): warning: L6329W: Pattern stm32h7xx_hal_exti.o(RO) only matches removed unused sections.
+.\ART-PI.sct(101): warning: L6329W: Pattern stm32h7xx_hal_dma2d.o(RO) only matches removed unused sections.
+.\ART-PI.sct(103): warning: L6329W: Pattern stm32h7xx_hal_ltdc_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(105): warning: L6329W: Pattern stm32h7xx_hal_sai_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(109): warning: L6329W: Pattern stm32h7xx_hal_sd_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(110): warning: L6329W: Pattern stm32h7xx_hal_tim.o(RO) only matches removed unused sections.
+.\ART-PI.sct(111): warning: L6329W: Pattern stm32h7xx_hal_tim_ex.o(RO) only matches removed unused sections.
+.\ART-PI.sct(112): warning: L6314W: No section matches pattern stm32h7xx_hal_i2s.o(RO).
+.\ART-PI.sct(113): warning: L6314W: No section matches pattern stm32h7xx_hal_i2s_ex.o(RO).
+.\ART-PI.sct(117): warning: L6329W: Pattern img_benchmark_cogwheel_alpha16.o(RO) only matches removed unused sections.
+.\ART-PI.sct(118): warning: L6329W: Pattern img_benchmark_cogwheel_argb.o(RO) only matches removed unused sections.
+.\ART-PI.sct(119): warning: L6329W: Pattern img_benchmark_cogwheel_chroma_keyed.o(RO) only matches removed unused sections.
+.\ART-PI.sct(120): warning: L6329W: Pattern img_benchmark_cogwheel_indexed16.o(RO) only matches removed unused sections.
+.\ART-PI.sct(121): warning: L6329W: Pattern img_benchmark_cogwheel_rgb.o(RO) only matches removed unused sections.
+.\ART-PI.sct(122): warning: L6329W: Pattern lv_demo_benchmark.o(RO) only matches removed unused sections.
+.\ART-PI.sct(123): warning: L6314W: No section matches pattern lv_font_montserrat_12_compr_az.o(RO).
+.\ART-PI.sct(124): warning: L6314W: No section matches pattern lv_font_montserrat_16_compr_az.o(RO).
+.\ART-PI.sct(125): warning: L6314W: No section matches pattern lv_font_montserrat_28_compr_az.o(RO).
+.\ART-PI.sct(126): warning: L6314W: No section matches pattern lv_demo_keypad_encoder.o(RO).
+.\ART-PI.sct(127): warning: L6329W: Pattern lv_demo_widgets.o(RO) only matches removed unused sections.
+.\ART-PI.sct(128): warning: L6329W: Pattern img_clothes.o(RO) only matches removed unused sections.
+.\ART-PI.sct(129): warning: L6329W: Pattern img_demo_widgets_avatar.o(RO) only matches removed unused sections.
+.\ART-PI.sct(130): warning: L6329W: Pattern img_lvgl_logo.o(RO) only matches removed unused sections.
+.\ART-PI.sct(132): warning: L6314W: No section matches pattern lv_font_dejavu_16_persian_hebrew.o(RO).
+.\ART-PI.sct(134): warning: L6329W: Pattern lv_font_loader.o(RO) only matches removed unused sections.
+.\ART-PI.sct(135): warning: L6314W: No section matches pattern lv_font_montserrat_8.o(RO).
+.\ART-PI.sct(136): warning: L6314W: No section matches pattern lv_font_montserrat_10.o(RO).
+.\ART-PI.sct(138): warning: L6314W: No section matches pattern lv_font_montserrat_12_subpx.o(RO).
+.\ART-PI.sct(139): warning: L6314W: No section matches pattern lv_font_montserrat_14.o(RO).
+.\ART-PI.sct(141): warning: L6314W: No section matches pattern lv_font_montserrat_18.o(RO).
+.\ART-PI.sct(142): warning: L6314W: No section matches pattern lv_font_montserrat_20.o(RO).
+.\ART-PI.sct(143): warning: L6314W: No section matches pattern lv_font_montserrat_22.o(RO).
+.\ART-PI.sct(144): warning: L6314W: No section matches pattern lv_font_montserrat_24.o(RO).
+.\ART-PI.sct(145): warning: L6314W: No section matches pattern lv_font_montserrat_26.o(RO).
+.\ART-PI.sct(146): warning: L6314W: No section matches pattern lv_font_montserrat_28.o(RO).
+.\ART-PI.sct(147): warning: L6314W: No section matches pattern lv_font_montserrat_28_compressed.o(RO).
+.\ART-PI.sct(148): warning: L6314W: No section matches pattern lv_font_montserrat_30.o(RO).
+.\ART-PI.sct(149): warning: L6314W: No section matches pattern lv_font_montserrat_32.o(RO).
+.\ART-PI.sct(150): warning: L6314W: No section matches pattern lv_font_montserrat_34.o(RO).
+.\ART-PI.sct(151): warning: L6314W: No section matches pattern lv_font_montserrat_36.o(RO).
+.\ART-PI.sct(152): warning: L6314W: No section matches pattern lv_font_montserrat_38.o(RO).
+.\ART-PI.sct(153): warning: L6314W: No section matches pattern lv_font_montserrat_40.o(RO).
+.\ART-PI.sct(154): warning: L6314W: No section matches pattern lv_font_montserrat_42.o(RO).
+.\ART-PI.sct(155): warning: L6314W: No section matches pattern lv_font_montserrat_44.o(RO).
+.\ART-PI.sct(156): warning: L6314W: No section matches pattern lv_font_montserrat_46.o(RO).
+.\ART-PI.sct(157): warning: L6314W: No section matches pattern lv_font_montserrat_48.o(RO).
+.\ART-PI.sct(158): warning: L6314W: No section matches pattern lv_font_simsun_16_cjk.o(RO).
+.\ART-PI.sct(159): warning: L6314W: No section matches pattern lv_font_unscii_8.o(RO).
+.\ART-PI.sct(160): warning: L6314W: No section matches pattern lv_font_unscii_16.o(RO).
+.\ART-PI.sct(162): warning: L6329W: Pattern gifdec.o(RO) only matches removed unused sections.
+.\ART-PI.sct(163): warning: L6329W: Pattern lv_gif.o(RO) only matches removed unused sections.
+.\ART-PI.sct(165): warning: L6314W: No section matches pattern about.o(RO).
+.\ART-PI.sct(166): warning: L6314W: No section matches pattern background.o(RO).
+.\ART-PI.sct(167): warning: L6314W: No section matches pattern delet.o(RO).
+.\ART-PI.sct(168): warning: L6314W: No section matches pattern image.o(RO).
+.\ART-PI.sct(169): warning: L6314W: No section matches pattern mail.o(RO).
+.\ART-PI.sct(170): warning: L6314W: No section matches pattern pos.o(RO).
+.\ART-PI.sct(171): warning: L6329W: Pattern ExternFont.o(RO) only matches removed unused sections.
+.\ART-PI.sct(172): warning: L6314W: No section matches pattern MyGuiDemo.o(RO).
+.\ART-PI.sct(184): warning: L6329W: Pattern if_api.o(RO) only matches removed unused sections.
+.\ART-PI.sct(186): warning: L6329W: Pattern netdb.o(RO) only matches removed unused sections.
+.\ART-PI.sct(187): warning: L6329W: Pattern netifapi.o(RO) only matches removed unused sections.
+.\ART-PI.sct(190): warning: L6329W: Pattern altcp.o(RO) only matches removed unused sections.
+.\ART-PI.sct(191): warning: L6329W: Pattern altcp_alloc.o(RO) only matches removed unused sections.
+.\ART-PI.sct(192): warning: L6314W: No section matches pattern altcp_tcp.o(RO).
+.\ART-PI.sct(194): warning: L6329W: Pattern dns.o(RO) only matches removed unused sections.
+.\ART-PI.sct(197): warning: L6329W: Pattern ip.o(RO) only matches removed unused sections.
+.\ART-PI.sct(198): warning: L6329W: Pattern mem.o(RO) only matches removed unused sections.
+.\ART-PI.sct(202): warning: L6329W: Pattern raw.o(RO) only matches removed unused sections.
+.\ART-PI.sct(203): warning: L6329W: Pattern stats.o(RO) only matches removed unused sections.
+.\ART-PI.sct(204): warning: L6329W: Pattern sys.o(RO) only matches removed unused sections.
+.\ART-PI.sct(210): warning: L6329W: Pattern autoip.o(RO) only matches removed unused sections.
+.\ART-PI.sct(211): warning: L6329W: Pattern dhcp.o(RO) only matches removed unused sections.
+.\ART-PI.sct(214): warning: L6329W: Pattern igmp.o(RO) only matches removed unused sections.
+.\ART-PI.sct(218): warning: L6314W: No section matches pattern mld6.o(RO).
+.\ART-PI.sct(220): warning: L6329W: Pattern mqtt.o(RO) only matches removed unused sections.
+Program Size: Code=396970 RO-data=407270 RW-data=172984 ZI-data=17957444  
+Finished: 0 information, 91 warning and 0 error messages.
 FromELF: creating hex file...
-"STM32H750XB\STM32H750XB.axf" - 0 Error(s), 96 Warning(s).
+"STM32H750XB\STM32H750XB.axf" - 0 Error(s), 97 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -172,9 +173,9 @@ Package Vendor: Keil
       Include file:  CMSIS\Core\Include\tz_context.h
 
    * Component: Keil.ARM Compiler::Compiler:Event Recorder:DAP:1.4.0
+      Include file:  Include\EventRecorder.h
       Source file:   Source\EventRecorder.c
       Include file:  Config\EventRecorderConf.h
-      Include file:  Include\EventRecorder.h
 
    * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:EVR:1.2.0
       Source file:   Source\retarget_io.c

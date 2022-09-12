@@ -24,51 +24,43 @@ void NetTask(void *para);
 
 int main(void)
 {
-	FRESULT res;
 	rt_thread_t task0;
 	rt_thread_t task1;
 	rt_thread_t task2;
 	rt_thread_t task3;
 	rt_thread_t task4;
 
-	 MPU_Config();
-	 SCB_EnableICache();
-	 SCB_EnableDCache();
+	MPU_Config();
+	SCB_EnableICache();
+	SCB_EnableDCache();
 	 
 	/*	QSPI_flash初始化 并映射  */
 	W25QXX_Init();
 	W25Q_Memory_Mapped_Enable();
-	
-	/* DMA2D, 时钟,中断配置	*/
-	__HAL_RCC_DMA2D_CLK_ENABLE();         
-	HAL_NVIC_SetPriority(DMA2D_IRQn,2,5);
-  HAL_NVIC_EnableIRQ(DMA2D_IRQn);
 
- // MX_GPIO_Init();
+	// MX_GPIO_Init();  //__mian 之前进行了初始化 因为fmc依赖GPIO初始化.
+  MX_DMA2D_Init();
   MX_DMA_Init();
   MX_LTDC_Init();
-  //MX_FMC_Init();
-  MX_DMA2D_Init();
+ // MX_FMC_Init();  //__mian 之前进行了初始化 目的：将heap定位到外部sdram,从而使用malloc管理sdram.
   MX_SDMMC1_SD_Init();
   MX_FATFS_Init();
   MX_SAI1_Init();
 	MX_LWIP_Init();
-	MX_FATFS_Init();
-	f_mount(&SDFatFS, "0", 0);
 	
 	task0 = rt_thread_create("Lvgl",LvglTask,0,1024*4,22,0);
 	rt_thread_startup(task0);
 	
-	task1 = rt_thread_create("Touch_scan",Touch_scan,0,1024,21,1);
+	task1 = rt_thread_create("Touch_scan",Touch_scan,0,1024,21,0);
 	rt_thread_startup(task1);
 	
 	task2 = rt_thread_create("Led",LedTask,0,512,20,0);
 	rt_thread_startup(task2);
 	
-	task3 = rt_thread_create("Music",AudioTask,"0:test.wav",1024*2,2,0);
+	task3 = rt_thread_create("Music",AudioTask,"0:test.wav",1024*2,5,0);
 	rt_thread_startup(task3);
 	
-  task4 = rt_thread_create("Net",NetTask,0,1024*2,16,5);
+  task4 = rt_thread_create("Net",NetTask,0,1024*2,4,0);
 	rt_thread_startup(task4);
 	
   while (1)
@@ -97,18 +89,25 @@ void LvglTask(void *para){
 	
 	#include "lv_disp.h"
 	extern  lv_disp_drv_t MyDisp_drv;
-	static FIL  ExFont24;
+	
+	static FIL  ExFont24 __attribute__((section("axi_ram"))); //必须定位到axi-ram 否则可能读写失败
 	static UINT br;
-	FRESULT res;
+	static FRESULT res;
+	static uint32_t io_time = 0;
 	
 	/*		LVGL font24 加载到 SDRAM	5.6MB	*/
 	FontBuffer = malloc(1024*1024*6);
+	res |= f_mount(&SDFatFS, "0", 0);
 	res |= f_open(&ExFont24 , "0:/LvglFont/Font24.bin" , FA_READ);
-	res |= f_read(&ExFont24 , FontBuffer , ExFont24.obj.objsize , &br);
+	io_time = HAL_GetTick();
+	res |= f_read(&ExFont24 , FontBuffer , f_size(&ExFont24) , &br);
+	io_time = HAL_GetTick() - io_time;
 	res |= f_close(&ExFont24);
 	if(res != FR_OK){
+		io_time = 0;
 		while(1);
 	}
+	
 	LCD_Fill(0,0,800,480,0);
 	lv_init();
 	LvgBspInit();
@@ -130,19 +129,56 @@ void LvglTask(void *para){
 
 uint8_t *NetBuf ;
 
-static int SendAll(int s, char*dataptr, size_t size){
-  int size_done = 0;
-  do{
-		rt_thread_mdelay(5);
-    size_done = write(s,dataptr, size);
-    size = size-size_done;
-    dataptr += size_done;
-    if(size_done<0)
-      return 1;      //发生错误
- }while(size_done>0);
- 
- return 0;
+static int SendUtilEnd(int s, char*dataptr, size_t size){
+	
+	int size_done = 0;
+
+	do{
+			//rt_thread_mdelay(5);
+			size_done = write(s,dataptr, size);
+			if(size_done<0)
+			{
+					return -1;      //发生错误
+			}
+			dataptr += size_done;
+			size = size-size_done;
+				
+ }while(size>0);
+	 
+	 return 0;
 }
+
+int SendAllData(int s, char*dataptr, size_t size)
+{
+	#define unit_bytes     10240
+	
+	
+	int res;
+	
+	do{
+			if((size-unit_bytes) > 0)
+			{
+					res = SendUtilEnd(s,dataptr,unit_bytes);
+					dataptr += unit_bytes;
+					size -= unit_bytes;
+			}
+			else
+			{
+					res = SendUtilEnd(s,dataptr,size);
+					size = 0;
+			}
+			
+			if(res == -1)
+			{
+					return -1;
+			}
+			
+			rt_thread_mdelay(2);
+			
+	}while(size);
+}
+
+
 
 
 extern struct netif gnetif;
@@ -189,7 +225,7 @@ void NetTask(void *para){
 //			close(sct);
 //      return;
 //		}
-		if( SendAll(sct,NetBuf, 1024*200 ) > 0){
+		if( SendAllData(sct,NetBuf, 1024*200 )){
 			close(sct);
 			rt_thread_mdelay(10);
 			goto restart;
@@ -231,6 +267,11 @@ void LedTask(void *p){
 		rt_thread_mdelay(200);
 	}
 }
+
+//void HAL_Delay(uint32_t Delay)
+//{
+//	rt_thread_mdelay(Delay);
+//}
 
 
 void SystemClock_Config(void)

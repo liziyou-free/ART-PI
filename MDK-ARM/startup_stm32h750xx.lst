@@ -48,32 +48,32 @@ ARM Macro Assembler    Page 1
    30 00000000         ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
    31 00000000         ; </h>
    32 00000000         
-   33 00000000 00000800 
+   33 00000000 00001200 
                        Stack_Size
-                               EQU              0x800
+                               EQU              0x1200
    34 00000000         
    35 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
 =3
    36 00000000         Stack_Mem
                                SPACE            Stack_Size
-   37 00000800         __initial_sp
-   38 00000800         
-   39 00000800         
-   40 00000800         ; <h> Heap Configuration
-   41 00000800         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
-   42 00000800         ; </h>
-   43 00000800         
+   37 00001200         __initial_sp
+   38 00001200         
+   39 00001200         
+   40 00001200         ; <h> Heap Configuration
+   41 00001200         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   42 00001200         ; </h>
+   43 00001200         
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   44 00000800 01000000 
+   44 00001200 01000000 
                        Heap_Size
                                EQU              0x1000000
-   45 00000800         
-   46 00000800                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
+   45 00001200         
+   46 00001200                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
 3
    47 00000000         __heap_base
    48 00000000         Heap_Mem
@@ -1280,7 +1280,7 @@ ARM Macro Assembler    Page 20
               00000000 
               00000000 
               00000000 
-              00000800 
+              00001200 
               01000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M7.fp.dp --apcs=
@@ -1314,7 +1314,7 @@ Symbol: Stack_Mem
       At line 605 in file startup_stm32h750xx.s
       At line 607 in file startup_stm32h750xx.s
 
-__initial_sp 00000800
+__initial_sp 00001200
 
 Symbol: __initial_sp
    Definitions
@@ -2931,7 +2931,7 @@ Symbol: Heap_Size
       At line 48 in file startup_stm32h750xx.s
       At line 606 in file startup_stm32h750xx.s
 
-Stack_Size 00000800
+Stack_Size 00001200
 
 Symbol: Stack_Size
    Definitions

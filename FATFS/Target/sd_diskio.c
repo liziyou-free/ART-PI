@@ -60,7 +60,7 @@
  * the value by default is as defined in the BSP platform driver otherwise 30 secs
  */
 
-#define SD_TIMEOUT 1 * 1000	//30 * 1000
+#define SD_TIMEOUT  20 //ms
 
 #define SD_DEFAULT_BLOCK_SIZE 512
 /*
@@ -172,6 +172,7 @@ DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
 {
     DRESULT res = RES_ERROR;
     uint32_t timeout;
+
     ReadStatus = 0;
     if (!((uint32_t)buff & 0x3))
     {   
@@ -232,6 +233,7 @@ DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
                 /* incase of a timeout return error */
                 if (ReadStatus == 0)
                 {
+									  res = RES_ERROR;
                     break;
                 }
                 else
@@ -267,6 +269,7 @@ DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
         }
     }
 		SCB_EnableDCache();
+
     return res;
 }
 

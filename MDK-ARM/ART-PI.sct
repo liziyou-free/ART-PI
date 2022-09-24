@@ -70,7 +70,9 @@ LR_IROM1 0x08000000 0x00100000  {    ; load region size_region            MCUÄÚ²
    .ANY (+RW +ZI)
    *(axi_ram)  ;ÆðÒ»¸öÐÂsetionÃû×Ö lvglµÄ»º³å buf_1 buf_2¶¨Î»µ½´Ë
   }
-
+  RW_ERAM  0xC0100000 UNINIT 0x1000000 { ; 
+                                 
+  }
   ARM_LIB_HEAP  0xC1000000 UNINIT 0x1000000 { ; 
 
 	.ANY (HEAP)                                        

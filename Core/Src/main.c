@@ -48,11 +48,11 @@ int main(void)
   MX_SAI1_Init();
 	MX_LWIP_Init();
 	
-	task0 = rt_thread_create("Lvgl",LvglTask,0,1024*4,22,0);
-	rt_thread_startup(task0);
-	
-	task1 = rt_thread_create("Touch_scan",Touch_scan,0,1024,21,0);
-	rt_thread_startup(task1);
+//	task0 = rt_thread_create("Lvgl",LvglTask,0,1024*4,22,0);
+//	rt_thread_startup(task0);
+//	
+//	task1 = rt_thread_create("Touch_scan",Touch_scan,0,1024,21,0);
+//	rt_thread_startup(task1);
 	
 	task2 = rt_thread_create("Led",LedTask,0,512,20,0);
 	rt_thread_startup(task2);
@@ -134,7 +134,7 @@ static int SendUtilEnd(int s, char*dataptr, size_t size){
 	int size_done = 0;
 
 	do{
-			//rt_thread_mdelay(5);
+			rt_thread_mdelay(3);
 			size_done = write(s,dataptr, size);
 			if(size_done<0)
 			{
@@ -156,7 +156,7 @@ int SendAllData(int s, char*dataptr, size_t size)
 	int res;
 	
 	do{
-			if((size-unit_bytes) > 0)
+			if(size > unit_bytes)
 			{
 					res = SendUtilEnd(s,dataptr,unit_bytes);
 					dataptr += unit_bytes;
@@ -173,7 +173,7 @@ int SendAllData(int s, char*dataptr, size_t size)
 					return -1;
 			}
 			
-			rt_thread_mdelay(2);
+			rt_thread_mdelay(3);
 			
 	}while(size);
 }
@@ -186,12 +186,12 @@ extern struct netif gnetif;
 void NetTask(void *para){
 	
 	int sct = 0; 
+  int client_sct = 0;
   int res = 0;
   struct sockaddr_in ip ;
-  memset(&ip,0,sizeof(struct sockaddr));
-  ip.sin_port = htons(1222);
-  ip.sin_family = AF_INET;
-  ip.sin_addr.s_addr = inet_addr("192.168.0.2");
+  struct sockaddr_in client_ip ;
+  memset(&ip,0,sizeof(struct sockaddr_in));
+
 
 	while(!netif_is_link_up(&gnetif))
 	{
@@ -199,39 +199,45 @@ void NetTask(void *para){
 	}
 	
 	NetBuf= malloc(1024*200);
-  *	NetBuf = '#';
 	if(!NetBuf){
 		while(1)
 		rt_thread_mdelay(5);
 	}
+  uint8_t *dtr = "Hello,word!@FreedomLi";
+  memcpy(NetBuf, dtr, strlen(dtr));
 	restart:
-	sct = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
+	sct = socket(AF_INET,SOCK_STREAM,0);
   if(sct<0){    //创建失败
     close(sct);
     goto restart;
   }
-  res = connect(sct,(struct sockaddr*)&ip,sizeof(struct sockaddr));
+  
+  ip.sin_port = htons(666);
+  ip.sin_family = AF_INET;
+  ip.sin_addr.s_addr = inet_addr("192.168.0.8");
+  
+//  res = connect(sct,(struct sockaddr*)&ip,sizeof(struct sockaddr_in));
+  res |= bind(sct,(struct sockaddr*)&ip,sizeof(struct sockaddr_in));
+  res |= listen(sct,10);
   if(res<0){
     close(sct);
-		rt_thread_mdelay(5);
+		rt_thread_mdelay(2);
     goto restart;
   }
+  int len = sizeof(struct sockaddr_in);
+  client_sct = accept(sct, &client_ip, (socklen_t *)&len);
+  
 	while(1){
-//		res = read(sct, &NetBuf, 1024*10);
-//		if(res){
-//			SendAll(sct,NetBuf,res);
-//		}
-//		else{
-//			close(sct);
-//      return;
-//		}
-		if( SendAllData(sct,NetBuf, 1024*200 )){
-			close(sct);
-			rt_thread_mdelay(10);
-			goto restart;
+		res = read(client_sct, &NetBuf[1024], 1024*10);
+      if(res){
+        if( SendAllData(client_sct,"Hello,Word and freeli, good evening!", 36 )){
+            close(client_sct);
+            rt_thread_mdelay(5); 
+            goto restart;
+      }
+      res = 0;
 		}
 	}
-	
 }
 
 

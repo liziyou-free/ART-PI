@@ -40,7 +40,7 @@
 
 #define WITH_RTOS 1
 
-//#define MEM_LIBC_MALLOC          1
+#define MEM_LIBC_MALLOC          1
 
 //#define MEMP_MEM_MALLOC          1
 
@@ -75,8 +75,6 @@ a lot of data that needs to be copied, this should be set high. */
 /* Relocate the LwIP RAM heap pointer */
 #define LWIP_RAM_HEAP_POINTER    (0x30020000)
 
-#define MEMP_NUM_PBUF						4096
-
 #define MEMP_NUM_NETBUF        12
 
 #define MEMP_NUM_NETCONN       10
@@ -94,7 +92,7 @@ a lot of data that needs to be copied, this should be set high. */
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool.
    @ note: used to allocate Tx pbufs only */
-#define PBUF_POOL_SIZE          60
+   #define PBUF_POOL_SIZE          20
 
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
@@ -130,7 +128,7 @@ a lot of data that needs to be copied, this should be set high. */
 
 
 /* ---------- DHCP options ---------- */
-#define LWIP_DHCP               0
+#define LWIP_DHCP               1
 
 
 /* ---------- UDP options ---------- */
@@ -248,6 +246,13 @@ The STM32H7xx allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define DEFAULT_THREAD_STACKSIZE        1024
 #define TCPIP_THREAD_PRIO               2
 
+#define DEFAULT_UDP_RECVMBOX_SIZE 20
+/*----- Value in opt.h for DEFAULT_TCP_RECVMBOX_SIZE: 0 -----*/
+#define DEFAULT_TCP_RECVMBOX_SIZE 20
+/*----- Value in opt.h for DEFAULT_ACCEPTMBOX_SIZE: 0 -----*/
+#define DEFAULT_ACCEPTMBOX_SIZE 20
+
+
 #endif /* __LWIPOPTS_H__ */
 
 
@@ -348,11 +353,11 @@ The STM32H7xx allows computing and verifying the IP, UDP, TCP and ICMP checksums
 ///*----- Value in opt.h for DEFAULT_THREAD_PRIO: 1 -----*/
 //#define DEFAULT_THREAD_PRIO 3
 ///*----- Value in opt.h for DEFAULT_UDP_RECVMBOX_SIZE: 0 -----*/
-//#define DEFAULT_UDP_RECVMBOX_SIZE 10
+//#define DEFAULT_UDP_RECVMBOX_SIZE 20
 ///*----- Value in opt.h for DEFAULT_TCP_RECVMBOX_SIZE: 0 -----*/
-//#define DEFAULT_TCP_RECVMBOX_SIZE 6
+//#define DEFAULT_TCP_RECVMBOX_SIZE 20
 ///*----- Value in opt.h for DEFAULT_ACCEPTMBOX_SIZE: 0 -----*/
-//#define DEFAULT_ACCEPTMBOX_SIZE 6
+//#define DEFAULT_ACCEPTMBOX_SIZE 20
 ///*----- Value in opt.h for RECV_BUFSIZE_DEFAULT: INT_MAX -----*/
 //#define RECV_BUFSIZE_DEFAULT 2000000000
 ///*----- Value in opt.h for LWIP_STATS: 1 -----*/

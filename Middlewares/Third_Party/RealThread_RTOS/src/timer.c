@@ -627,7 +627,7 @@ RTM_EXPORT(rt_timer_control);
  * @note This function shall be invoked in operating system timer interrupt.
  */
 void rt_timer_check(void)
-{
+{ 
     struct rt_timer *t;
     rt_tick_t current_tick;
     rt_base_t level;

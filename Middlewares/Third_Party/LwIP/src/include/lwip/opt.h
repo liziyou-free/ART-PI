@@ -1772,7 +1772,7 @@
  * sys_mbox_new() when tcpip_init is called.
  */
 #if !defined TCPIP_MBOX_SIZE || defined __DOXYGEN__
-#define TCPIP_MBOX_SIZE                 0
+#define TCPIP_MBOX_SIZE                 10//0
 #endif
 
 /**

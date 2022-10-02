@@ -18,7 +18,7 @@
  * Please modify RT_HEAP_SIZE if you enable RT_USING_HEAP
  * the RT_HEAP_SIZE max value = (sram size - ZI size), 1024 means 1024 bytes
  */
-#define RT_HEAP_SIZE (60*1024)
+#define RT_HEAP_SIZE (40*1024)
 static rt_uint8_t rt_heap[RT_HEAP_SIZE] __attribute__((section("axi_ram"))); 
 
 RT_WEAK void *rt_heap_begin_get(void)
@@ -32,17 +32,22 @@ RT_WEAK void *rt_heap_end_get(void)
 }
 #endif
 
+/*	要求内核初始化后才能执行操作系统相关函数	*/
+uint32_t __g_kernel_is_init;
+
 void SysTick_Handler(void)
 {
-    rt_interrupt_enter();
-    
+	HAL_IncTick();
 	//lv_tick_inc(1);
 	
-	  HAL_IncTick();
-	
-    rt_tick_increase();
+	if(__g_kernel_is_init == 0xABCD1234){
+		
+		 rt_interrupt_enter();
+		
+		 rt_tick_increase();
 
-    rt_interrupt_leave();
+		 rt_interrupt_leave();
+	}
 }
 
 /**
@@ -52,7 +57,10 @@ void rt_hw_board_init(void)
 {
     extern void SystemClock_Config(void);
     
+     __g_kernel_is_init = 0xABCD1234;
+	
 //    HAL_Init();
+	
 //    SystemClock_Config();
 	
     //SystemCoreClockUpdate();

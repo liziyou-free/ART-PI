@@ -142,6 +142,10 @@ int rtthread_startup(void);
 #ifdef __ARMCC_VERSION
 extern int $Super$$main(void);
 /* re-define main function */
+//int $Sub$$__rt_entry(void)
+//{
+//  rtthread_startup();
+//}
 int $Sub$$main(void)
 {
     rtthread_startup();
@@ -182,7 +186,7 @@ struct rt_thread main_thread;
 void main_thread_entry(void *parameter)
 {
     extern int main(void);
-
+  
 #ifdef RT_USING_COMPONENTS_INIT
     /* RT-Thread components initialization */
     rt_components_init();
@@ -194,6 +198,7 @@ void main_thread_entry(void *parameter)
     /* invoke system main function */
 #ifdef __ARMCC_VERSION
     {
+//       $Super$$__rt_entry();
         extern int $Super$$main(void);
         $Super$$main(); /* for ARMCC. */
     }
@@ -235,6 +240,7 @@ void rt_application_init(void)
  */
 int rtthread_startup(void)
 {
+    
 	  rtthread_is_init = 1;
 	
     rt_hw_interrupt_disable();

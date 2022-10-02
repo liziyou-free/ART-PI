@@ -42,7 +42,7 @@
 
 #define MEM_LIBC_MALLOC          1
 
-//#define MEMP_MEM_MALLOC          1
+#define MEMP_MEM_MALLOC          1
 
 #define MEMP_OVERFLOW_CHECK      1
 
@@ -206,7 +206,7 @@ The STM32H7xx allows computing and verifying the IP, UDP, TCP and ICMP checksums
 /**
  * LWIP_NETCONN==1: Enable Netconn API (require to use api_lib.c)
  */
-#define LWIP_NETCONN                    1
+#define LWIP_NETCONN                    0
 
 /*
    ------------------------------------
@@ -241,8 +241,8 @@ The STM32H7xx allows computing and verifying the IP, UDP, TCP and ICMP checksums
 */
 
 #define TCPIP_THREAD_NAME              "TCP/IP"
-#define TCPIP_THREAD_STACKSIZE          2048
-#define TCPIP_MBOX_SIZE                 1
+#define TCPIP_THREAD_STACKSIZE          1024
+#define TCPIP_MBOX_SIZE                 10
 #define DEFAULT_THREAD_STACKSIZE        1024
 #define TCPIP_THREAD_PRIO               2
 

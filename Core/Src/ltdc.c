@@ -22,7 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #define SDRAM_BANK1_START_ADRESS      ((uint32_t)(0xC0000000))
-static uint16_t disp_buf[800*480]__attribute__((at(0xC0000000)));  
+//static uint16_t disp_buf[800*480]__attribute__((section("framebuffer")));
 /* USER CODE END 0 */
 
 LTDC_HandleTypeDef hltdc;
@@ -61,7 +61,7 @@ void MX_LTDC_Init(void)
   pLayerCfg.Alpha0 = 0;
   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_CA;
   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_CA;
-  pLayerCfg.FBStartAdress = disp_buf;
+  pLayerCfg.FBStartAdress = SDRAM_BANK1_START_ADRESS;//disp_buf;
   pLayerCfg.ImageWidth = 800;
   pLayerCfg.ImageHeight = 480;
   pLayerCfg.Backcolor.Blue = 0;

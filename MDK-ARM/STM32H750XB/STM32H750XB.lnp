@@ -1,4 +1,4 @@
---cpu Cortex-M7.fp.dp
+--cpu Cortex-M7.fp.dp --lto
 "stm32h750xb\startup_stm32h750xx.o"
 "stm32h750xb\w25qxx.o"
 "stm32h750xb\main.o"

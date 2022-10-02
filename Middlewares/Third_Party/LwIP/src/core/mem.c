@@ -173,6 +173,8 @@ mem_trim(void *mem, mem_size_t size)
 }
 #endif /* MEM_LIBC_MALLOC || MEM_USE_POOLS */
 
+//#include "mem_with_mutex.h"
+
 #if MEM_LIBC_MALLOC
 /* lwIP heap implemented using C library malloc() */
 

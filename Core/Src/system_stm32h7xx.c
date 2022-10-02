@@ -268,19 +268,21 @@ void SystemInit (void)
    * 24us. During this time the others FMC master (such as LTDC) cannot use it!
    */
   //FMC_Bank1_R->BTCR[0] = 0x000030D2;
-	
-	/*	启动过程中就初始化外部SDRAM 解决将heap放到外部SDRAM后 __main()执行分散加载时，
-	    操作未使能的sdram区域 导致内存异常的问题
-	*/
 
-	extern void SystemClock_Config(void);
-	extern void MX_FMC_Init(void);
-	extern void  MX_GPIO_Init(void);
+    /*	启动过程中就初始化外部SDRAM 解决将heap放到外部SDRAM后 __main()执行分散加载时，
+        操作未使能的sdram区域 导致内存异常的问题
+    */
 
-	HAL_Init();
-  SystemClock_Config();
-	MX_GPIO_Init();
-	MX_FMC_Init();
+    extern void SystemClock_Config(void);
+    extern void MX_FMC_Init(void);
+    extern void  MX_GPIO_Init(void);
+    extern uint32_t __g_kernel_is_init;
+
+    __g_kernel_is_init = 0;
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_FMC_Init();
 }
 
 /**

@@ -88,8 +88,8 @@ void my_input_read(lv_indev_drv_t * drv, lv_indev_data_t*data)
 
 void LvgBspInit(){
 	
-	static lv_color_t  buf_1[800 * 40] __attribute__((section("axi_ram")));  //__attribute__ ((aligned (4)));
-  static lv_color_t  buf_2[800 * 40] __attribute__((section("axi_ram")));  //__attribute__ ((aligned (4)));
+	static lv_color_t  buf_1[800 * 40]__attribute__((section("axi_ram")));
+  static lv_color_t  buf_2[800 * 40]__attribute__((section("axi_ram")));
 	
 	static lv_indev_drv_t indev_drv;
 	static lv_disp_draw_buf_t disp_buf;

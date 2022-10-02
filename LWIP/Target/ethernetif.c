@@ -48,7 +48,7 @@
 #define IFNAME1 't'
 
 /* ETH Setting  */
-#define ETH_DMA_TRANSMIT_TIMEOUT               ( 20U )
+#define ETH_DMA_TRANSMIT_TIMEOUT               ( 30U )
 /* ETH_RX_BUFFER_SIZE parameter is defined in lwipopts.h */
 
 /* USER CODE BEGIN 1 */
@@ -86,20 +86,18 @@ ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptor
 #pragma location=0x30040200
 uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_RX_BUFFER_SIZE]; /* Ethernet Receive Buffers */
 
-
-
 #elif defined ( __CC_ARM )  /* MDK ARM Compiler */ 
-/*	独占sram3, 容量为32KB , 加上了地址定位指令 编译器不会检查是否越界 请自行计算检查  */
+/*  独占sram3, 容量为32KB , 加上了地址定位指令 编译器不会检查是否越界 请自行计算检查  */
 __attribute__((at(0x30040000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
 __attribute__((at(0x30040180))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
 __attribute__((at(0x30040300))) uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_RX_BUFFER_SIZE]; /* Ethernet Receive Buffer */
 
+//#elif defined ( __GNUC__ ) /* GNU Compiler */
 
-
-#elif defined ( __GNUC__ ) /* GNU Compiler */
-ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDecripSection"))); /* Ethernet Rx DMA Descriptors */
-ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDecripSection")));   /* Ethernet Tx DMA Descriptors */
-uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_RX_BUFFER_SIZE] __attribute__((section(".RxArraySection"))); /* Ethernet Receive Buffers */
+#elif (__ARMCC_VERSION >= 6010050)  /*!< MDK AC6(ARM Compiler 6) */
+ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section("ethernetif_ram"))); /* Ethernet Rx DMA Descriptors */
+ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section("ethernetif_ram")));   /* Ethernet Tx DMA Descriptors */
+uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_RX_BUFFER_SIZE] __attribute__((section("ethernetif_ram"))); /* Ethernet Receive Buffers */
 
 #endif
 
@@ -190,9 +188,9 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     HAL_NVIC_SetPriority(ETH_IRQn, 0, 4);
     HAL_NVIC_EnableIRQ(ETH_IRQn);
   /* USER CODE BEGIN ETH_MspInit 1 */
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-		HAL_Delay(50);
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+        HAL_Delay(50);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
   /* USER CODE END ETH_MspInit 1 */
   }
 }
@@ -243,7 +241,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
 void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef *heth)
 {
   //osSemaphoreRelease(RxPktSemaphore);
-	rt_sem_release(s_xSemaphore);
+    rt_sem_release(s_xSemaphore);
 }
 
 /* USER CODE BEGIN 4 */
@@ -332,21 +330,21 @@ static void low_level_init(struct netif *netif)
   }
 
   /* create a binary semaphore used for informing ethernetif of frame reception */
-	
+    
   //RxPktSemaphore = osSemaphoreNew(1, 1, NULL);
-	 s_xSemaphore = rt_sem_create("fram",1,RT_IPC_FLAG_FIFO);
+     s_xSemaphore = rt_sem_create("fram",1,RT_IPC_FLAG_FIFO);
 
   /* create the task that handles the ETH_MAC */
-	
+    
 /* USER CODE BEGIN OS_THREAD_NEW_CMSIS_RTOS_V2 */
-	  typedef void (*entry)(void *);
-	  task = rt_thread_create("EthIf",(entry)ethernetif_input,netif,1024,0,0);
-	  if(task){
-			rt_thread_startup(task);
-		}else{
-			while(1);  //创建失败
-		}
-	
+      typedef void (*entry)(void *);
+      task = rt_thread_create("EthIf",(entry)ethernetif_input,netif,1024,1,2);
+      if(task){
+            rt_thread_startup(task);
+        }else{
+            while(1);  //创建失败
+        }
+    
 /* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
 /* USER CODE BEGIN PHY_PRE_CONFIG */
 
@@ -469,8 +467,8 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
   TxConfig.Length =  p->tot_len;
   TxConfig.TxBuffer = Txbuffer;
 
-	SCB_CleanInvalidateDCache();
-	
+    SCB_CleanInvalidateDCache();
+    
   HAL_ETH_Transmit(&heth, &TxConfig, ETH_DMA_TRANSMIT_TIMEOUT);
 
   return errval;
@@ -507,8 +505,8 @@ static struct pbuf * low_level_input(struct netif *netif)
 
     /* Invalidate data cache for ETH Rx Buffers */
     SCB_InvalidateDCache_by_Addr((uint32_t *)RxBuff->buffer, framelength);
-		//SCB_CleanInvalidateDCache();
-		
+        //SCB_CleanInvalidateDCache();
+        
     custom_pbuf  = (struct pbuf_custom*)LWIP_MEMPOOL_ALLOC(RX_POOL);
     if(custom_pbuf != NULL)
     {
@@ -537,7 +535,7 @@ void ethernetif_input(void* argument)
   for( ;; )
   {
     //if (osSemaphoreAcquire(RxPktSemaphore, TIME_WAITING_FOR_INPUT) == osOK)
-		if ( rt_sem_take(s_xSemaphore, RT_WAITING_FOREVER)==RT_EOK)     //RT_WAITING_FOREVER
+        if ( rt_sem_take(s_xSemaphore, RT_WAITING_FOREVER)==RT_EOK)     //RT_WAITING_FOREVER
     {
       do
       {
@@ -759,58 +757,58 @@ void ethernet_link_thread(void* argument)
   PHYLinkState = LAN8742_GetLinkState(&LAN8742);
 
 //  if(!netif_is_link_up(netif) && (PHYLinkState <= LAN8742_STATUS_LINK_DOWN))
-	if(PHYLinkState <= LAN8742_STATUS_LINK_DOWN )
+    if(PHYLinkState <= LAN8742_STATUS_LINK_DOWN )
   {
     HAL_ETH_Stop_IT(&heth);
     netif_set_down(netif);
     netif_set_link_down(netif);
-		linkchanged = 0;
+        linkchanged = 0;
   }
 //  else if(netif_is_link_up(netif) && (PHYLinkState > LAN8742_STATUS_LINK_DOWN))
-	 else if(PHYLinkState > LAN8742_STATUS_LINK_DOWN)
+     else if(PHYLinkState > LAN8742_STATUS_LINK_DOWN)
   {
-		if(linkchanged == 0)
-		{		
-			switch (PHYLinkState)
-			{
-			case LAN8742_STATUS_100MBITS_FULLDUPLEX:
-				duplex = ETH_FULLDUPLEX_MODE;
-				speed = ETH_SPEED_100M;
-				linkchanged = 1;
-				break;
-			case LAN8742_STATUS_100MBITS_HALFDUPLEX:
-				duplex = ETH_HALFDUPLEX_MODE;
-				speed = ETH_SPEED_100M;
-				linkchanged = 1;
-				break;
-			case LAN8742_STATUS_10MBITS_FULLDUPLEX:
-				duplex = ETH_FULLDUPLEX_MODE;
-				speed = ETH_SPEED_10M;
-				linkchanged = 1;
-				break;
-			case LAN8742_STATUS_10MBITS_HALFDUPLEX:
-				duplex = ETH_HALFDUPLEX_MODE;
-				speed = ETH_SPEED_10M;
-				linkchanged = 1;
-				break;
-			default:
-				break;
-			}
+        if(linkchanged == 0)
+        {       
+            switch (PHYLinkState)
+            {
+            case LAN8742_STATUS_100MBITS_FULLDUPLEX:
+                duplex = ETH_FULLDUPLEX_MODE;
+                speed = ETH_SPEED_100M;
+                linkchanged = 1;
+                break;
+            case LAN8742_STATUS_100MBITS_HALFDUPLEX:
+                duplex = ETH_HALFDUPLEX_MODE;
+                speed = ETH_SPEED_100M;
+                linkchanged = 1;
+                break;
+            case LAN8742_STATUS_10MBITS_FULLDUPLEX:
+                duplex = ETH_FULLDUPLEX_MODE;
+                speed = ETH_SPEED_10M;
+                linkchanged = 1;
+                break;
+            case LAN8742_STATUS_10MBITS_HALFDUPLEX:
+                duplex = ETH_HALFDUPLEX_MODE;
+                speed = ETH_SPEED_10M;
+                linkchanged = 1;
+                break;
+            default:
+                break;
+            }
 
-			if(linkchanged)
-			{
-				/* Get MAC Config MAC */
-				HAL_ETH_GetMACConfig(&heth, &MACConf);
-				MACConf.DuplexMode = duplex;
-				MACConf.Speed = speed;
-				HAL_ETH_SetMACConfig(&heth, &MACConf);
+            if(linkchanged)
+            {
+                /* Get MAC Config MAC */
+                HAL_ETH_GetMACConfig(&heth, &MACConf);
+                MACConf.DuplexMode = duplex;
+                MACConf.Speed = speed;
+                HAL_ETH_SetMACConfig(&heth, &MACConf);
 
-				HAL_ETH_Start_IT(&heth);
-				netif_set_up(netif);
-				netif_set_link_up(netif);
-				
-			}
-		}
+                HAL_ETH_Start_IT(&heth);
+                netif_set_up(netif);
+                netif_set_link_up(netif);
+                
+            }
+        }
   }
 
 /* USER CODE BEGIN ETH link Thread core code for User BSP */

@@ -32,8 +32,8 @@ static void SDRAM_INIT(SDRAM_HandleTypeDef *SdramHandle){
   HAL_SDRAM_SendCommand(SdramHandle,&SdramTypdef,50);
   
   /*        上电延时200US       */
-  int delay_200us = 100000;
-  while(delay_200us--); //延迟
+  uint16_t delay_200us;
+  while(++delay_200us); //延迟
   
   /*        全部充电        */
   SdramTypdef.CommandMode= FMC_SDRAM_CMD_PALL;

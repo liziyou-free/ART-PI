@@ -76,6 +76,11 @@
 #define LV_STRLEN       strlen
 #define LV_STRNCPY      strncpy
 
+/*  ×Ô¶¨Òå */
+//#include "mem_with_mutex.h"
+//#define LV_MALLOC       __malloc
+//#define LV_REALLOC      __realloc
+//#define LV_FREE         __free
 
 /*====================
    HAL SETTINGS
